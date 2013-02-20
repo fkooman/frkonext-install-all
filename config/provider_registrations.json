@@ -1,0 +1,11 @@
+[
+    {
+        "endpoint": "{BASE_URL}/php-voot-provider/voot.php", 
+        "filter": [], 
+        "id": "demo", 
+        "name": "Demo Group Provider", 
+        "basic_pass": "bar", 
+        "basic_user": "foo",
+        "contact_email": null
+    }
+]

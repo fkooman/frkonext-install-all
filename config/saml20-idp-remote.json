@@ -1,0 +1,17 @@
+[
+    {
+        "SingleLogoutService": "{BASE_URL}/sspidp/saml2/idp/SingleLogoutService.php", 
+        "SingleSignOnService": "{BASE_URL}/sspidp/saml2/idp/SSOService.php", 
+        "authproc": {
+            "50": {
+                "0": "oid2name", 
+                "class": "core:AttributeMap"
+            }
+        }, 
+        "certFingerprint": "{CERT_FINGERPRINT}", 
+        "entityid": "{BASE_URL}/sspidp/saml2/idp/metadata.php", 
+        "name": {
+            "en": "Identity Provider for '{DOMAIN_NAME}'"
+        }
+    }
+]

@@ -1,0 +1,46 @@
+[
+    {
+        "allowed_scope": "authorizations", 
+        "contact_email": null, 
+        "description": "Application for end-users to revoke OAuth application consent.", 
+        "icon": null, 
+        "id": "html-manage-authorizations", 
+        "name": "OAuth Authorization Manager", 
+        "redirect_uri": "{BASE_URL}/html-manage-authorizations/index.html", 
+        "secret": null, 
+        "type": "user_agent_based_application"
+    }, 
+    {
+        "allowed_scope": "applications", 
+        "contact_email": null, 
+        "description": "Application for administrators to manage OAuth application registrations.", 
+        "icon": null, 
+        "id": "html-manage-applications", 
+        "name": "OAuth Application Registration Manager", 
+        "redirect_uri": "{BASE_URL}/html-manage-applications/index.html", 
+        "secret": null, 
+        "type": "user_agent_based_application"
+    }, 
+    {
+        "allowed_scope": "read", 
+        "contact_email": null, 
+        "description": "Application to view your group membership and other members of your groups.", 
+        "icon": null, 
+        "id": "html-voot-client", 
+        "name": "Group Membership Viewer", 
+        "redirect_uri": "{BASE_URL}/html-voot-client/index.html", 
+        "secret": null, 
+        "type": "user_agent_based_application"
+    }, 
+    {
+        "allowed_scope": "ssp", 
+        "contact_email": null, 
+        "description": "Application to manage the simpleSAMLphp metadata registrations.", 
+        "icon": null, 
+        "id": "html-manage-ssp", 
+        "name": "Manage simpleSAMLphp Metadata", 
+        "redirect_uri": "{BASE_URL}/html-manage-ssp/index.html", 
+        "secret": null, 
+        "type": "user_agent_based_application"
+    }
+]

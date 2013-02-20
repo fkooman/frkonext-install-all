@@ -1,0 +1,80 @@
+diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
+--- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/config/authsources.php	2013-02-20 18:11:00.000000000 +0100
+@@ -22,11 +22,14 @@
+ 
+ 		// The entity ID of the IdP this should SP should contact.
+ 		// Can be NULL/unset, in which case the user will be shown a list of available IdPs.
+-		'idp' => NULL,
++		'idp' => '{BASE_URL}/sspproxy/saml2/idp/metadata.php',
+ 
+ 		// The URL to the discovery service.
+ 		// Can be NULL/unset, in which case a builtin discovery service will be used.
+ 		'discoURL' => NULL,
++
++		// request persistent NameID
++		'NameIDPolicy' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
+ 	),
+ 
+ 
+diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
+--- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/config/config.php	2013-02-20 18:08:57.000000000 +0100
+@@ -22,7 +22,7 @@
+ 	 * external url, no matter where you come from (direct access or via the
+ 	 * reverse proxy).
+ 	 */
+-	'baseurlpath'           => 'simplesaml/',
++	'baseurlpath'           => '{BASE_URL}/sspsp/',
+ 	'certdir'               => 'cert/',
+ 	'loggingdir'            => 'log/',
+ 	'datadir'               => 'data/',
+@@ -69,7 +69,7 @@
+ 	 * metadata listing and diagnostics pages.
+ 	 * You can also put a hash here; run "bin/pwgen.php" to generate one.
+ 	 */
+-	'auth.adminpassword'		=> '123',
++	'auth.adminpassword'		=> '{ADMIN_PASSWORD}',
+ 	'admin.protectindexpage'	=> false,
+ 	'admin.protectmetadata'		=> false,
+ 
+@@ -81,7 +81,7 @@
+ 	 * A possible way to generate a random salt is by running the following command from a unix shell:
+ 	 * tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
+ 	 */
+-	'secretsalt' => 'defaultsecretsalt',
++	'secretsalt' => '{SECRET_SALT}',
+ 	
+ 	/*
+ 	 * Some information about the technical persons running this installation.
+@@ -98,7 +98,7 @@
+ 	 *
+ 	 * See this page for a list of valid timezones: http://php.net/manual/en/timezones.php
+ 	 */
+-	'timezone' => NULL,
++	'timezone' => 'Europe/Amsterdam',
+ 
+ 	/*
+ 	 * Logging.
+@@ -274,7 +274,7 @@
+ 	/*
+ 	 * Languages available, RTL languages, and what language is default
+ 	 */
+-	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr'),
++	'language.available'	=> array('en', 'de', 'es', 'fr', 'nl'),
+ 	'language.rtl'		=> array('ar','dv','fa','ur','he'),
+ 	'language.default'		=> 'en',
+ 
+diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php simplesamlphp-1.10.0/metadata/saml20-idp-remote.php
+--- simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/metadata/saml20-idp-remote.php	2013-02-20 18:16:02.000000000 +0100
+@@ -89,3 +89,9 @@
+ 	'SingleLogoutService'  => 'https://testidp.wayf.dk/saml2/idp/SingleLogoutService.php',
+ 	'certFingerprint'      => '04b3b08bce004c27458b3e85b125273e67ef062b'
+ );
++
++$metadata['{BASE_URL}/sspproxy/saml2/idp/metadata.php'] = array(
++	'SingleSignOnService' => '{BASE_URL}/sspproxy/saml2/idp/SSOService.php',
++	'SingleLogoutService' => '{BASE_URL}/sspproxy/saml2/idp/SingleLogoutService.php',
++	'certFingerprint' => '{CERT_FINGERPRINT}',
++);

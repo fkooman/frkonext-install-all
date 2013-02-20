@@ -1,0 +1,196 @@
+diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
+--- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/config/authsources.php	2013-02-20 17:57:19.000000000 +0100
+@@ -49,6 +49,83 @@
+ 	),
+ 	*/
+ 
++	'userpass' => array(
++		'exampleauth:UserPass',
++
++		// Administrator               
++		'admin:adm1n' => array(
++			'uid' => array('admin'),
++			// entitlement to manage OAuth applications
++			'eduPersonEntitlement' => array('urn:x-oauth:entitlement:applications'),
++			'eduPersonPrincipalName' => array('admin@example.edu'),
++			'eduPersonAffiliation' => array('member', 'employee'),
++			'cn' => array('Carlos Catalano'),
++			'givenName' => array('Carlos'),
++			'sn' => array('Catalano'),
++			'mail' => array('admin@example.edu'),
++		),
++
++		// Teacher
++		'teacher:teach3r' => array(
++			'uid' => array('teacher'),
++			// entitlement to view grades of all students and list of students
++			'eduPersonEntitlement' => array('urn:x-oauth:entitlement:administration'),
++			'eduPersonPrincipalName' => array('teacher@example.edu'),
++			'eduPersonAffiliation' => array('member', 'employee'),
++			'cn' => array('Margie Korn'),
++			'givenName' => array('Margie'),
++			'sn' => array('Korn'),
++			'mail' => array('teacher@example.edu'),
++		),
++
++		// Students
++		'jstroud:xDIosd9j' => array(
++			'uid' => array('jstroud'),
++			'eduPersonAffiliation' => array('member', 'student'),
++			'eduPersonPrincipalName' => array('jstroud@students.example.edu'),
++			'cn' => array('Jerry Stroud'),
++			'givenName' => array('Jerry'),
++			'sn' => array('Stroud'),
++			'mail' => array('jstroud@students.example.edu'),
++		),
++		'mwisdom:LQ32xvaV' => array(
++			'uid' => array('mwisdom'),
++			'eduPersonAffiliation' => array('member', 'student'),
++			'eduPersonPrincipalName' => array('mwisdom@students.example.edu'),
++			'cn' => array('Myra Wisdom'),
++			'givenName' => array('Myra'),
++			'sn' => array('Wisdom'),
++			'mail' => array('mwisdom@students.example.edu'),
++		),
++		'bmcatee:ySVk4B9d' => array(
++			'uid' => array('bcatee'),
++			'eduPersonAffiliation' => array('member', 'student'),
++			'eduPersonPrincipalName' => array('bmcatee@students.example.edu'),
++			'cn' => array('Bobby Mcatee'),
++			'givenName' => array('Bobby'),
++			'sn' => array('Mcatee'),
++			'mail' => array('bmcatee@students.example.edu'),
++		),
++		'jmatson:8r5yyIV3' => array(
++			'uid' => array('jmatson'),
++			'eduPersonAffiliation' => array('member', 'student'),
++			'eduPersonPrincipalName' => array('jmatson@students.example.edu'),
++			'cn' => array('Janie Matson'),
++			'givenName' => array('Janie'),
++			'sn' => array('Matson'),
++			'mail' => array('jmatson@students.example.edu'),
++		),
++		'mcram:62xX1Fid' => array(
++			'uid' => array('mcram'),
++			'eduPersonAffiliation' => array('member', 'student'),
++			'eduPersonPrincipalName' => array('mcram@students.example.edu'),
++			'cn' => array('Margaret Cram'),
++			'givenName' => array('Margaret'),
++			'sn' => array('Cram'),
++			'mail' => array('mcram@students.example.edu'),
++		),
++	),
++
+ 	/*
+ 	'example-userpass' => array(
+ 		'exampleauth:UserPass',
+diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
+--- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/config/config.php	2013-02-20 18:00:27.000000000 +0100
+@@ -22,7 +22,7 @@
+ 	 * external url, no matter where you come from (direct access or via the
+ 	 * reverse proxy).
+ 	 */
+-	'baseurlpath'           => 'simplesaml/',
++	'baseurlpath'           => '{BASE_URL}/sspidp/',
+ 	'certdir'               => 'cert/',
+ 	'loggingdir'            => 'log/',
+ 	'datadir'               => 'data/',
+@@ -69,7 +69,7 @@
+ 	 * metadata listing and diagnostics pages.
+ 	 * You can also put a hash here; run "bin/pwgen.php" to generate one.
+ 	 */
+-	'auth.adminpassword'		=> '123',
++	'auth.adminpassword'		=> '{ADMIN_PASSWORD}',
+ 	'admin.protectindexpage'	=> false,
+ 	'admin.protectmetadata'		=> false,
+ 
+@@ -81,7 +81,7 @@
+ 	 * A possible way to generate a random salt is by running the following command from a unix shell:
+ 	 * tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
+ 	 */
+-	'secretsalt' => 'defaultsecretsalt',
++	'secretsalt' => '{SECRET_SALT}',
+ 	
+ 	/*
+ 	 * Some information about the technical persons running this installation.
+@@ -98,7 +98,7 @@
+ 	 *
+ 	 * See this page for a list of valid timezones: http://php.net/manual/en/timezones.php
+ 	 */
+-	'timezone' => NULL,
++	'timezone' => 'Europe/Amsterdam',
+ 
+ 	/*
+ 	 * Logging.
+@@ -171,7 +171,7 @@
+ 	 * one of the functionalities below, but in some cases you could run multiple functionalities.
+ 	 * In example when you are setting up a federation bridge.
+ 	 */
+-	'enable.saml20-idp'		=> false,
++	'enable.saml20-idp'		=> true,
+ 	'enable.shib13-idp'		=> false,
+ 	'enable.adfs-idp'		=> false,
+ 	'enable.wsfed-sp'		=> false,
+@@ -274,7 +274,7 @@
+ 	/*
+ 	 * Languages available, RTL languages, and what language is default
+ 	 */
+-	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr'),
++	'language.available'	=> array('en', 'de', 'es', 'fr', 'nl'),
+ 	'language.rtl'		=> array('ar','dv','fa','ur','he'),
+ 	'language.default'		=> 'en',
+ 
+@@ -319,7 +319,7 @@
+ 	/*
+ 	 * Which theme directory should be used?
+ 	 */
+-	'theme.use' 		=> 'default',
++	'theme.use' 		=> 'themeSURFnet:SURFnet',
+ 
+ 	
+ 	/*
+diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php
+--- simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-02-20 17:57:19.000000000 +0100
+@@ -14,22 +14,22 @@
+ 	'host' => '__DEFAULT__',
+ 
+ 	/* X.509 key and certificate. Relative to the cert directory. */
+-	'privatekey' => 'server.pem',
+-	'certificate' => 'server.crt',
++	'privatekey' => 'idp.pem',
++	'certificate' => 'idp.crt',
+ 
+ 	/*
+ 	 * Authentication source to use. Must be one that is configured in
+ 	 * 'config/authsources.php'.
+ 	 */
+-	'auth' => 'example-userpass',
++	'auth' => 'userpass',
+ 
+ 	/* Uncomment the following to use the uri NameFormat on attributes. */
+-	/*
+ 	'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+ 	'authproc' => array(
++		// Add schacHomeOrganization
++		90 => array('class' => 'core:AttributeAdd', 'schacHomeOrganization' => '{DOMAIN_NAME}'),
+ 		// Convert LDAP names to oids.
+ 		100 => array('class' => 'core:AttributeMap', 'name2oid'),
+ 	),
+-	*/
+ 
+ );
+diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php simplesamlphp-1.10.0/metadata/saml20-sp-remote.php
+--- simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php	2012-09-25 12:16:10.000000000 +0200
++++ simplesamlphp-1.10.0/metadata/saml20-sp-remote.php	2013-02-20 18:07:20.000000000 +0100
+@@ -25,3 +25,8 @@
+ 	'simplesaml.nameidattribute' => 'uid',
+ 	'simplesaml.attributes' => FALSE,
+ );
++
++$metadata['{BASE_URL}/sspproxy/module.php/saml/sp/metadata.php/default-sp'] = array(
++	'AssertionConsumerService' => '{BASE_URL}/sspproxy/module.php/saml/sp/saml2-acs.php/default-sp',
++	'SingleLogoutService' => '{BASE_URL}/sspproxy/module.php/saml/sp/saml2-logout.php/default-sp',
++);

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Demo OAuth Service</title>
+  <title>Demo FrKoNext Service</title>
   <style>
     table { border: 1px solid #000; border-collapse: collapse}
     td, th { padding: 5px; }
@@ -13,20 +13,13 @@
   </style>
 </head>
 <body>
-<h1>Demo OAuth Service</h1>
+<h1>Demo FrKoNext Service</h1>
 <p>
 This page lists all the available components and services installed and some
 sample user accounts configured.
 </p>
 <p>
-The code for the script that installs this environment can be found <a href="https://github.com/fkooman/oauth-install-all">here</a>.
-</p>
-<p>If you want to read more on OAuth, reading the specification is recommended. It is easy to read and comprehend if you have some basic understanding of web architecture:
-<ul>
-<li><a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a></li>
-<li><a href="https://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></li>
-</ul>
-The first one deals with communication between the client and the authorization server. The second one deals with the communication between the client and the resource server.
+The code for the script that installs this environment can be found <a href="https://github.com/fkooman/frkonext-install-all">here</a>.
 </p>
 
 <h2>Service Information</h2>
@@ -38,7 +31,6 @@ The first one deals with communication between the client and the authorization 
 <tr><td><tt>{BASE_URL}/php-oauth/token.php<tt></td><td>Token Endpoint</td></tr>
 <tr><td><tt>{BASE_URL}/php-oauth/tokeninfo.php<tt></td><td>Token Info Endpoint, see <a href="https://developers.google.com/accounts/docs/OAuth2Login#validatingtoken">Google Documentation</a></td></tr>
 <tr><th colspan="2">Resource Servers</th></tr>
-<tr><td><tt>{BASE_URL}/php-oauth-grades-rs/api.php<tt></td><td>Grades API (<a href="{BASE_URL}/php-oauth-grades-rs/">documentation</a>)</td></tr>
 <tr><td><tt>{BASE_URL}/php-voot-proxy/voot.php<tt></td><td>VOOT Group Membership API (<a href="{BASE_URL}/voot-specification/VOOT.md">VOOT Specification</a>)</td></tr>
 </table>
 
@@ -66,22 +58,13 @@ There are 7 accounts you can use:
 
 <h2>OAuth Enabled Applications</h2>
 <ul>
-<li>[<a href="https://github.com/fkooman/html-view-grades">SRC</a>] <a href="html-view-grades/index.html">View Grades</a> (with <tt>urn:x-oauth:entitlement:administration</tt> entitlement grades from all students can be viewed)</li>
 <li>[<a href="https://github.com/fkooman/html-voot-client">SRC</a>] <a href="html-voot-client/index.html">VOOT Group Membership Client</a> (all users can view their group memberships and members of the groups)</li>
-<li>[<a href="https://github.com/fkooman/html-music-player">SRC</a>] <a href="html-music-player/index.html">HTML Music Player using remoteStorage</a></li>
 </ul>
 
 <h2>Authentication (SAML)</h2>
 <ul>
-<li>[<a href="http://www.simplesamlphp.org">WEB</a>] <a href="sspidp">IdP</a> and <a href="sspsp">SP</a> simpleSAMLphp Admin Panel (the <tt>admin</tt> password is <tt>{ADMIN_PASSWORD}</tt>)</li>
-<li>[<a href="https://github.com/fkooman/oauth-install-all/blob/master/res/saml.php">SRC</a>] <a href="saml/index.php">SAML attribute information</a> (for authenticated user)</li>
-</ul>
-
-<h2>Debug</h2>
-<p>Assorted client and debugging stuff.</p>
-<ul>
-<li>[<a href="https://github.com/fkooman/oauth-install-all/blob/master/res/oauth.php">SRC</a>] <a href="demo-oauth-app/index.php">Demo Client</a></li>
-<li>[<a href="https://github.com/fkooman/php-oauth-demo-client">SRC</a>] <a href="php-oauth-demo-client/index.php">Debug Client</a></li> 
+<li>[<a href="http://www.simplesamlphp.org">WEB</a>] <a href="sspproxy">Proxy</a>, <a href="sspidp">IdP</a> and <a href="sspsp">SP</a> simpleSAMLphp Admin Panel (the <tt>admin</tt> password is <tt>{ADMIN_PASSWORD}</tt>)</li>
+<li>[<a href="https://github.com/fkooman/frkonext-install-all/blob/master/res/saml.php">SRC</a>] <a href="saml/index.php">SAML attribute information</a> (for authenticated user)</li>
 </ul>
 
 </body>

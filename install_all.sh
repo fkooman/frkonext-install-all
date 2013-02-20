@@ -116,15 +116,13 @@ openssl req -subj '/O=Snake Oil, CN=Demo Proxy Service/' -newkey rsa:2048 -new -
 
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
-# update the BASE_URL in the patch and apply the simpleSAMLphp configuration 
-# patch to configure an IdP and SP
-
-#cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
-#    | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
-#    | sed "s|{BASE_URL}|${BASE_URL}|g" \
-#    | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" \
-#    | sed "s|{SECRET_SALT}|${SSP_SECRET_SALT}|g" \
-#    | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" | patch -p1
+# apply configuration patch to simpleSAMLphp
+cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
+    | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
+    | sed "s|{BASE_URL}|${BASE_URL}|g" \
+    | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" \
+    | sed "s|{SECRET_SALT}|${SSP_SECRET_SALT}|g" \
+    | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" | patch -p1
 
 # patch in PDO support
 patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp-add-pdo-metadata-source-v6.diff
@@ -155,8 +153,7 @@ openssl req -subj '/O=Snake Oil, CN=Demo Identity Provider/' -newkey rsa:2048 -n
 
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
-# update the BASE_URL in the patch and apply the simpleSAMLphp configuration 
-# patch to configure an IdP and SP
+# apply configuration patch to simpleSAMLphp
 cat ${LAUNCH_DIR}/config/simpleSAMLphp-IdP.diff \
     | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
@@ -192,8 +189,7 @@ CERT_FINGERPRINT=`openssl x509 -inform PEM -in ../proxy/cert/proxy.crt -noout -f
 
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
-# update the BASE_URL in the patch and apply the simpleSAMLphp configuration 
-# patch to configure an IdP and SP
+# apply configuration patch to simpleSAMLphp
 cat ${LAUNCH_DIR}/config/simpleSAMLphp-SP.diff \
     | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \

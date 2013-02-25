@@ -8,7 +8,9 @@
                 "class": "core:AttributeMap"
             }
         }, 
-        "certFingerprint": "{CERT_FINGERPRINT}", 
+        "certFingerprint": [
+            "{CERT_FINGERPRINT}"
+        ], 
         "entityid": "{BASE_URL}/sspidp/saml2/idp/metadata.php", 
         "name": {
             "en": "Identity Provider for '{DOMAIN_NAME}'"

@@ -1,6 +1,6 @@
 diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
 --- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/authsources.php	2013-02-20 17:57:19.000000000 +0100
++++ simplesamlphp-1.10.0/config/authsources.php	2013-02-25 20:39:03.000000000 +0100
 @@ -49,6 +49,83 @@
  	),
  	*/
@@ -87,7 +87,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
  		'exampleauth:UserPass',
 diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
 --- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-02-20 18:00:27.000000000 +0100
++++ simplesamlphp-1.10.0/config/config.php	2013-02-25 20:39:36.000000000 +0100
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -142,18 +142,9 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
  
-@@ -319,7 +319,7 @@
- 	/*
- 	 * Which theme directory should be used?
- 	 */
--	'theme.use' 		=> 'default',
-+	'theme.use' 		=> 'themeSURFnet:SURFnet',
- 
- 	
- 	/*
 diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php
 --- simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-02-20 17:57:19.000000000 +0100
++++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-02-25 20:39:03.000000000 +0100
 @@ -14,22 +14,22 @@
  	'host' => '__DEFAULT__',
  
@@ -184,7 +175,7 @@ diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp
  );
 diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php simplesamlphp-1.10.0/metadata/saml20-sp-remote.php
 --- simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-sp-remote.php	2013-02-20 18:07:20.000000000 +0100
++++ simplesamlphp-1.10.0/metadata/saml20-sp-remote.php	2013-02-25 20:39:03.000000000 +0100
 @@ -25,3 +25,8 @@
  	'simplesaml.nameidattribute' => 'uid',
  	'simplesaml.attributes' => FALSE,

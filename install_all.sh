@@ -164,10 +164,6 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-IdP.diff \
 # enable the example-userpass module
 touch modules/exampleauth/enable
 
-# install and enable SURFnet theme
-git clone https://github.com/SURFnet/simpleSAMLphp-SURFnet.git modules/themeSURFnet
-touch modules/themeSURFnet/enable
-
 # Apache config
 echo "Alias ${BASE_PATH}/sspidp ${INSTALL_DIR}/ssp/idp/www" > ${INSTALL_DIR}/apache/frkonext_sspidp.conf
 )

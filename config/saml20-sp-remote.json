@@ -1,9 +1,6 @@
 [
     {
-        "AssertionConsumerService": {
-            "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST", 
-            "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp"
-        }, 
+        "AssertionConsumerService": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp",
         "IDPList": [
             "{BASE_URL}/sspidp/saml2/idp/metadata.php"
         ], 

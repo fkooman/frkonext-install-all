@@ -42,7 +42,6 @@ else
 fi
 
 SIMPLESAMLPHP_VERSION=1.10.0
-CODEMIRROR_VERSION=3.1
 
 cat << EOF
 ###############################################################################
@@ -281,10 +280,6 @@ curl -o html-webapp-deps/js/jso.js https://raw.github.com/andreassolberg/jso/mas
 # Bootstrap
 curl -o html-webapp-deps/bootstrap.zip http://twitter.github.com/bootstrap/assets/bootstrap.zip
 (cd html-webapp-deps/ && unzip -q bootstrap.zip && rm bootstrap.zip)
-
-# CodeMirror
-curl -o html-webapp-deps/codemirror-${CODEMIRROR_VERSION}.zip http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
-(cd html-webapp-deps/ && unzip -q codemirror-${CODEMIRROR_VERSION}.zip && mv codemirror-${CODEMIRROR_VERSION} codemirror && rm codemirror-${CODEMIRROR_VERSION}.zip)
 )
 
 cat << EOF

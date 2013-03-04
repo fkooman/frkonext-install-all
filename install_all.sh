@@ -39,6 +39,7 @@ else
     BASE_URL=$2
     BASE_PATH=`echo ${BASE_URL} | sed "s|[^/]*\/\/[^/]*||g"`
     DOMAIN_NAME=`echo ${BASE_URL} | sed "s|[^/]*\/\/||g" | sed "s|:.*||g" | sed "s|\/.*||g"`
+    DATE_TIME=`date`
 fi
 
 SIMPLESAMLPHP_VERSION=1.10.0
@@ -95,7 +96,8 @@ mkdir -p ${INSTALL_DIR}/apache
 # the index page
 cat ${LAUNCH_DIR}/res/index.html \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
-    | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" > ${INSTALL_DIR}/index.html
+    | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" \
+    | sed "s|{DATE_TIME}|${DATE_TIME}|g" > ${INSTALL_DIR}/index.html
 
 cat << EOF
 #######################

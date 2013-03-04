@@ -10,6 +10,7 @@
     td, th { border: 1px solid #000; }
     th { background-color: #ddd; }
     th.bw { background-color: #000; color: #fff; font-weight: bold; padding: 5px 10px; }
+    div.footer { text-align: center; }
   </style>
 </head>
 
@@ -84,7 +85,7 @@
 
       <td><tt>adm1n</tt></td>
 
-      <td>Has <tt>urn:x-oauth:entitlement:applications</tt> entitlement</td>
+      <td>Has <tt>urn:x-oauth:entitlement:applications</tt> and <tt>urn:x-frkonext:entitlement:admin</tt> entitlement</td>
     </tr>
 
     <tr>
@@ -167,5 +168,9 @@
 
     <li>[<a href="https://github.com/fkooman/frkonext-install-all/blob/master/res/saml.php">SRC</a>] <a href="saml/index.php">SAML attribute information</a> (for authenticated user)</li>
   </ul>
+
+  <div class="footer">
+    <small>This instance was deployed on {DATE_TIME}</small>
+  </div>
 </body>
 </html>

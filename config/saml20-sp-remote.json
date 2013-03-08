@@ -1,6 +1,6 @@
 [
     {
-        "AssertionConsumerService": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp",
+        "AssertionConsumerService": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp", 
         "IDPList": [
             "{BASE_URL}/sspidp/saml2/idp/metadata.php"
         ], 
@@ -27,8 +27,10 @@
             }
         }, 
         "entityid": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
+        "metadataurl": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
         "name": {
-            "en": "Service Provider for '{DOMAIN_NAME}'"
+            "en": "Service Provider for '{DOMAIN_NAME}'", 
+            "nl": "Service Provider voor '{DOMAIN_NAME}'"
         }
     }
 ]

@@ -1,7 +1,17 @@
 [
     {
-        "SingleLogoutService": "{BASE_URL}/sspidp/saml2/idp/SingleLogoutService.php", 
-        "SingleSignOnService": "{BASE_URL}/sspidp/saml2/idp/SSOService.php", 
+        "SingleLogoutService": [
+            {
+                "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect", 
+                "Location": "{BASE_URL}/sspidp/saml2/idp/SingleLogoutService.php"
+            }
+        ], 
+        "SingleSignOnService": [
+            {
+                "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect", 
+                "Location": "{BASE_URL}/sspidp/saml2/idp/SSOService.php"
+            }
+        ], 
         "authproc": {
             "50": {
                 "0": "oid2name", 
@@ -13,7 +23,8 @@
         ], 
         "entityid": "{BASE_URL}/sspidp/saml2/idp/metadata.php", 
         "name": {
-            "en": "Identity Provider for '{DOMAIN_NAME}'"
+            "en": "Identity Provider for '{DOMAIN_NAME}'", 
+            "nl": "Identity Provider voor '{DOMAIN_NAME}'"
         }
     }, 
     {

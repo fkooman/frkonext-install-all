@@ -55,6 +55,10 @@
             }
         ], 
         "entityid": "https://openidp.feide.no", 
-        "metadata-url": "https://openidp.feide.no/simplesaml/saml2/idp/metadata.php"
+        "metadata-url": "https://openidp.feide.no/simplesaml/saml2/idp/metadata.php", 
+        "name": {
+            "en": "Feide OpenIdP - guest users", 
+            "no": "Feide Gjestebrukere"
+        }
     }
 ]

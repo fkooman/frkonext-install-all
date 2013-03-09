@@ -1,6 +1,6 @@
 diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
 --- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-02-20 18:44:20.000000000 +0100
++++ simplesamlphp-1.10.0/config/config.php	2013-03-09 18:04:27.000000000 +0100
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -65,7 +65,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  
 diff -urN simplesamlphp-1.10.0.orig/config/module_aggregator.php simplesamlphp-1.10.0/config/module_aggregator.php
 --- simplesamlphp-1.10.0.orig/config/module_aggregator.php	1970-01-01 01:00:00.000000000 +0100
-+++ simplesamlphp-1.10.0/config/module_aggregator.php	2013-02-20 18:45:33.000000000 +0100
++++ simplesamlphp-1.10.0/config/module_aggregator.php	2013-03-09 18:04:27.000000000 +0100
 @@ -0,0 +1,42 @@
 +<?php
 +
@@ -111,7 +111,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/module_aggregator.php simplesamlphp-1
 +
 diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php
 --- simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-02-20 18:44:20.000000000 +0100
++++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-03-09 18:05:42.000000000 +0100
 @@ -14,14 +14,14 @@
  	'host' => '__DEFAULT__',
  
@@ -130,3 +130,23 @@ diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp
  
  	/* Uncomment the following to use the uri NameFormat on attributes. */
  	/*
+@@ -32,4 +32,19 @@
+ 	),
+ 	*/
+ 
++	'authproc' => array(
++		1 => array(
++			'class' => 'saml:TransientNameID',
++		),
++		2 => array(
++			'class' => 'saml:PersistentNameID',
++			'attribute' => 'eduPersonPrincipalName',
++		),
++		3 => array(
++			'class' => 'saml:AttributeNameID',
++			'attribute' => 'mail',
++			'Format' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
++		),
++	),
++
+ );

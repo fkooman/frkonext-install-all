@@ -25,7 +25,9 @@
         "contacts": [
             {
                 "contactType": "technical", 
-                "emailAddress": "support@feide.no", 
+                "emailAddress": [
+                    "support@feide.no"
+                ], 
                 "givenName": "Feide", 
                 "surName": "support"
             }

@@ -22,7 +22,7 @@
             "schacHomeOrganization"
         ], 
         "entityid": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
-        "metadataurl": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
+        "metadata-url": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
         "name": {
             "en": "Service Provider for '{DOMAIN_NAME}'", 
             "nl": "Service Provider voor '{DOMAIN_NAME}'"

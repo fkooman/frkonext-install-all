@@ -237,13 +237,15 @@ php docs/initDatabase.php
 
 # figure out the fingerprint of the certificate from the IdP
 CERT_FINGERPRINT=`openssl x509 -inform PEM -in ../ssp/idp/cert/idp.crt -noout -fingerprint | cut -d '=' -f 2 | sed "s|:||g" | tr '[A-F]' '[a-f]'`
+CERT_DATA=`cat ../ssp/idp/cert/idp.crt | grep -v "BEGIN" | grep -v "END" | tr -d '\n'`
 
 # import the entries in the database
 mkdir tmp/
 cat ${LAUNCH_DIR}/config/saml20-idp-remote.json \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \
-    | sed "s|{CERT_FINGERPRINT}|${CERT_FINGERPRINT}|g" > tmp/saml20-idp-remote.json
+    | sed "s|{CERT_FINGERPRINT}|${CERT_FINGERPRINT}|g" \
+    | sed "s|{CERT_DATA}|${CERT_DATA}|g" > tmp/saml20-idp-remote.json
 
 cat ${LAUNCH_DIR}/config/saml20-sp-remote.json \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \

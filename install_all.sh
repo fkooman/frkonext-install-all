@@ -251,12 +251,12 @@ cat ${LAUNCH_DIR}/config/saml20-sp-remote.json \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" > tmp/saml20-sp-remote.json
 
-php docs/importJsonMetadataPdo.php tmp/
-
 cat config/config.ini \
     | sed "s|http://localhost/php-oauth/tokeninfo.php|${BASE_URL}/php-oauth/tokeninfo.php|g" \
     | sed "s|/var/simplesamlphp|${INSTALL_DIR}/ssp/proxy|g" > config/tmp_config.ini
 mv config/tmp_config.ini config/config.ini
+
+php docs/importJsonMetadataPdo.php tmp/
 
 cat docs/apache.conf \
     | sed "s|/APPNAME|${BASE_PATH}/php-ssp-api|g" \

@@ -3,12 +3,31 @@
         "AssertionConsumerService": [
             {
                 "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST", 
-                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp"
+                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp", 
+                "index": 0
+            }, 
+            {
+                "Binding": "urn:oasis:names:tc:SAML:1.0:profiles:browser-post", 
+                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml1-acs.php/default-sp", 
+                "index": 1
+            }, 
+            {
+                "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact", 
+                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp", 
+                "index": 2
+            }, 
+            {
+                "Binding": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01", 
+                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml1-acs.php/default-sp/artifact", 
+                "index": 3
+            }, 
+            {
+                "Binding": "urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser", 
+                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp", 
+                "index": 4
             }
         ], 
-        "IDPList": [
-            "{BASE_URL}/sspidp/saml2/idp/metadata.php"
-        ], 
+        "IDPList": [], 
         "SingleLogoutService": [
             {
                 "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect", 
@@ -21,11 +40,24 @@
             "uid", 
             "schacHomeOrganization"
         ], 
+        "contacts": [
+            {
+                "contactType": "technical", 
+                "emailAddress": [
+                    "na@example.org"
+                ], 
+                "givenName": "Administrator"
+            }
+        ], 
+        "description": {
+            "en": "This is a Service Provider demonstrating FrKoNext.", 
+            "nl": "Dit is een Service Provider om FrKoNext te demonstreren."
+        }, 
         "entityid": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
-        "metadata-url": "{BASE_URL}/sspsp/module.php/saml/sp/metadata.php/default-sp", 
+        "metadata-set": "saml20-sp-remote", 
         "name": {
-            "en": "Service Provider for '{DOMAIN_NAME}'", 
-            "nl": "Service Provider voor '{DOMAIN_NAME}'"
+            "en": "Service Provider for \"{DOMAIN_NAME}\"", 
+            "nl": "Service Provider voor \"{DOMAIN_NAME}\""
         }
     }
 ]

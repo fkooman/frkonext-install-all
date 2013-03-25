@@ -128,6 +128,7 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
 
 # patch in PDO support
 patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp-add-pdo-metadata-source-v6.diff
+patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp_wrong_entity_descriptor_type.diff
 # very weird default context: unconfined_u:object_r:user_tmp_t:s0, restore it
 restorecon lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 
@@ -182,8 +183,8 @@ mkdir -p ssp
 mv simplesamlphp-${SIMPLESAMLPHP_VERSION} ssp/sp
 cd ${INSTALL_DIR}/ssp/sp
 
-# figure out the fingerprint of the certificate from the proxy
-CERT_FINGERPRINT=`openssl x509 -inform PEM -in ../proxy/cert/proxy.crt -noout -fingerprint | cut -d '=' -f 2 | sed "s|:||g" | tr '[A-F]' '[a-f]'`
+# convert the proxy certificate to a one-line base64 string
+CERT_DATA=`cat ../proxy/cert/proxy.crt | grep -v 'CERTIFICATE' | tr -d '\n'`
 
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
@@ -193,7 +194,8 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-SP.diff \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
     | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" \
     | sed "s|{SECRET_SALT}|${SSP_SECRET_SALT}|g" \
-    | sed "s|{CERT_FINGERPRINT}|${CERT_FINGERPRINT}|g" | patch -p1
+    | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \
+    | sed "s|{CERT_DATA}|${CERT_DATA}|g" | patch -p1
 
 # Apache config
 echo "Alias ${BASE_PATH}/sspsp ${INSTALL_DIR}/ssp/sp/www" > ${INSTALL_DIR}/apache/frkonext_sspsp.conf
@@ -235,16 +237,14 @@ ln -s ../../php-lib-remote-rs extlib/
 sh docs/configure.sh
 php docs/initDatabase.php
 
-# figure out the fingerprint of the certificate from the IdP
-CERT_FINGERPRINT=`openssl x509 -inform PEM -in ../ssp/idp/cert/idp.crt -noout -fingerprint | cut -d '=' -f 2 | sed "s|:||g" | tr '[A-F]' '[a-f]'`
-CERT_DATA=`cat ../ssp/idp/cert/idp.crt | grep -v "BEGIN" | grep -v "END" | tr -d '\n'`
+# convert the IdP certificate to a one-line base64 string
+CERT_DATA=`cat ../ssp/idp/cert/idp.crt | grep -v "CERTIFICATE" | tr -d '\n'`
 
 # import the entries in the database
 mkdir tmp/
 cat ${LAUNCH_DIR}/config/saml20-idp-remote.json \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \
-    | sed "s|{CERT_FINGERPRINT}|${CERT_FINGERPRINT}|g" \
     | sed "s|{CERT_DATA}|${CERT_DATA}|g" > tmp/saml20-idp-remote.json
 
 cat ${LAUNCH_DIR}/config/saml20-sp-remote.json \

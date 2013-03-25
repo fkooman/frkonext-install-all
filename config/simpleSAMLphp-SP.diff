@@ -1,7 +1,7 @@
 diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
 --- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/authsources.php	2013-02-20 18:11:00.000000000 +0100
-@@ -22,11 +22,14 @@
++++ simplesamlphp-1.10.0/config/authsources.php	2013-03-25 16:40:24.000000000 +0100
+@@ -22,11 +22,31 @@
  
  		// The entity ID of the IdP this should SP should contact.
  		// Can be NULL/unset, in which case the user will be shown a list of available IdPs.
@@ -12,6 +12,23 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
  		// Can be NULL/unset, in which case a builtin discovery service will be used.
  		'discoURL' => NULL,
 +
++		'name' => array(
++			'en' => 'Service Provider for "{DOMAIN_NAME}"',
++			'nl' => 'Service Provider voor "{DOMAIN_NAME}"'
++		),
++
++		'description' => array(
++			'en' => 'This is a Service Provider demonstrating FrKoNext.',
++			'nl' => 'Dit is een Service Provider om FrKoNext te demonstreren.'
++		),
++
++		'attributes' => array(
++			'eduPersonEntitlement',
++			'cn',
++			'uid', 
++			'schacHomeOrganization'
++		),
++
 +		// request persistent NameID
 +		'NameIDPolicy' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
  	),
@@ -19,7 +36,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
  
 diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
 --- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-02-20 18:08:57.000000000 +0100
++++ simplesamlphp-1.10.0/config/config.php	2013-03-25 16:37:28.000000000 +0100
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -67,7 +84,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  
 diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php simplesamlphp-1.10.0/metadata/saml20-idp-remote.php
 --- simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-remote.php	2013-02-20 18:16:02.000000000 +0100
++++ simplesamlphp-1.10.0/metadata/saml20-idp-remote.php	2013-03-25 16:37:28.000000000 +0100
 @@ -89,3 +89,9 @@
  	'SingleLogoutService'  => 'https://testidp.wayf.dk/saml2/idp/SingleLogoutService.php',
  	'certFingerprint'      => '04b3b08bce004c27458b3e85b125273e67ef062b'
@@ -76,5 +93,5 @@ diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php simplesamlphp
 +$metadata['{BASE_URL}/sspproxy/saml2/idp/metadata.php'] = array(
 +	'SingleSignOnService' => '{BASE_URL}/sspproxy/saml2/idp/SSOService.php',
 +	'SingleLogoutService' => '{BASE_URL}/sspproxy/saml2/idp/SingleLogoutService.php',
-+	'certFingerprint' => '{CERT_FINGERPRINT}',
++	'certData' => '{CERT_DATA}',
 +);

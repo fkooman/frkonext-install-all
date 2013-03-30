@@ -54,7 +54,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
 +			'mail' => array('mwisdom@students.example.edu'),
 +		),
 +		'bmcatee:ySVk4B9d' => array(
-+			'uid' => array('bcatee'),
++			'uid' => array('bmcatee'),
 +			'eduPersonAffiliation' => array('member', 'student'),
 +			'eduPersonPrincipalName' => array('bmcatee@students.example.edu'),
 +			'cn' => array('Bobby Mcatee'),

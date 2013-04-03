@@ -42,7 +42,8 @@ else
     DATE_TIME=`date`
 fi
 
-SIMPLESAMLPHP_VERSION=1.10.0
+SIMPLESAMLPHP_VERSION=trunk
+SIMPLESAMLPHP_REVISION=3230    # only for trunk
 
 cat << EOF
 ###############################################################################
@@ -92,6 +93,7 @@ rm -rf ${INSTALL_DIR}/*
 
 mkdir -p ${INSTALL_DIR}/downloads
 mkdir -p ${INSTALL_DIR}/apache
+mkdir -p ${INSTALL_DIR}/res
 
 # the index page
 cat ${LAUNCH_DIR}/res/index.html \
@@ -99,14 +101,37 @@ cat ${LAUNCH_DIR}/res/index.html \
     | sed "s|{ADMIN_PASSWORD}|${SSP_ADMIN_PASSWORD}|g" \
     | sed "s|{DATE_TIME}|${DATE_TIME}|g" > ${INSTALL_DIR}/index.html
 
+# install the logos
+cp ${LAUNCH_DIR}/res/*.png ${INSTALL_DIR}/res
+
+# download simpleSAMLphp
+if [ "trunk" == "${SIMPLESAMLPHP_VERSION}" ]
+then
+    # check it out from SVN
+    (
+        cd ${INSTALL_DIR}/downloads
+        svn -q export -r ${SIMPLESAMLPHP_REVISION} http://simplesamlphp.googlecode.com/svn/trunk/ simplesamlphp-${SIMPLESAMLPHP_VERSION}
+        (
+            cd simplesamlphp-${SIMPLESAMLPHP_VERSION}
+            cp config-templates/* config/
+            cp metadata-templates/* metadata/
+        )
+        tar -czf simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz simplesamlphp-${SIMPLESAMLPHP_VERSION}
+    )
+else
+    # download the tarball
+    (
+        cd ${INSTALL_DIR}/downloads
+        curl -O https://simplesamlphp.googlecode.com/files/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+    )
+fi
+
 cat << EOF
 #######################
 # simpleSAMLphp Proxy #
 #######################
 EOF
 (
-cd ${INSTALL_DIR}/downloads
-curl -O https://simplesamlphp.googlecode.com/files/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 cd ${INSTALL_DIR}
 tar -xzf downloads/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 mkdir -p ssp
@@ -119,6 +144,7 @@ openssl req -subj '/O=Snake Oil, CN=Demo Proxy Service/' -newkey rsa:2048 -new -
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
 # apply configuration patch to simpleSAMLphp
+echo "[PATCH] simpleSAMLphp-proxy.diff"
 cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
     | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
@@ -127,8 +153,9 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" | patch -p1
 
 # patch in PDO support
+echo "[PATCH] simplesamlphp-add-pdo-metadata-source-v6.diff"
 patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp-add-pdo-metadata-source-v6.diff
-patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp_wrong_entity_descriptor_type.diff
+
 # very weird default context: unconfined_u:object_r:user_tmp_t:s0, restore it
 restorecon lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 
@@ -157,6 +184,7 @@ openssl req -subj '/O=Snake Oil, CN=Demo Identity Provider/' -newkey rsa:2048 -n
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
 # apply configuration patch to simpleSAMLphp
+echo "[PATCH] simpleSAMLphp-IdP.diff"
 cat ${LAUNCH_DIR}/config/simpleSAMLphp-IdP.diff \
     | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \
@@ -189,6 +217,7 @@ CERT_DATA=`cat ../proxy/cert/proxy.crt | grep -v 'CERTIFICATE' | tr -d '\n'`
 SSP_SECRET_SALT=`env LC_CTYPE=C tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo`
 
 # apply configuration patch to simpleSAMLphp
+echo "[PATCH] simpleSAMLphp-SP.diff"
 cat ${LAUNCH_DIR}/config/simpleSAMLphp-SP.diff \
     | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
     | sed "s|{BASE_URL}|${BASE_URL}|g" \

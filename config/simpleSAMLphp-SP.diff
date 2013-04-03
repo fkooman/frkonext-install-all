@@ -1,7 +1,7 @@
-diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
---- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/authsources.php	2013-03-25 16:40:24.000000000 +0100
-@@ -22,11 +22,31 @@
+diff -urN simplesamlphp-trunk.orig/config/authsources.php simplesamlphp-trunk/config/authsources.php
+--- simplesamlphp-trunk.orig/config/authsources.php	2013-04-03 10:13:10.000000000 +0200
++++ simplesamlphp-trunk/config/authsources.php	2013-04-03 10:15:43.000000000 +0200
+@@ -22,11 +22,48 @@
  
  		// The entity ID of the IdP this should SP should contact.
  		// Can be NULL/unset, in which case the user will be shown a list of available IdPs.
@@ -31,12 +31,29 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
 +
 +		// request persistent NameID
 +		'NameIDPolicy' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
++
++		'UIInfo' => array(
++			'DisplayName' => array(
++				'en' => 'Service Provider for "{DOMAIN_NAME}"',
++				'nl' => 'Service Provider voor "{DOMAIN_NAME}"'
++			),
++			'InformationURL' => array(
++				'en' => 'https://github.com/fkooman/frkonext-install-all'
++			),
++			'Logo' => array(
++					array(
++						'url' => '{BASE_URL}/res/frkonext-sp.png',
++						'height' => 48,
++						'width' => 108
++					),
++			)
++		),
  	),
  
  
-diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
---- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-03-25 16:37:28.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/config.php
+--- simplesamlphp-trunk.orig/config/config.php	2013-04-03 10:13:10.000000000 +0200
++++ simplesamlphp-trunk/config/config.php	2013-04-03 10:14:37.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -73,7 +90,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  
  	/*
  	 * Logging.
-@@ -274,7 +274,7 @@
+@@ -293,7 +293,7 @@
  	/*
  	 * Languages available, RTL languages, and what language is default
  	 */
@@ -82,12 +99,12 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
  
-diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php simplesamlphp-1.10.0/metadata/saml20-idp-remote.php
---- simplesamlphp-1.10.0.orig/metadata/saml20-idp-remote.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-remote.php	2013-03-25 16:37:28.000000000 +0100
-@@ -89,3 +89,9 @@
- 	'SingleLogoutService'  => 'https://testidp.wayf.dk/saml2/idp/SingleLogoutService.php',
- 	'certFingerprint'      => '04b3b08bce004c27458b3e85b125273e67ef062b'
+diff -urN simplesamlphp-trunk.orig/metadata/saml20-idp-remote.php simplesamlphp-trunk/metadata/saml20-idp-remote.php
+--- simplesamlphp-trunk.orig/metadata/saml20-idp-remote.php	2013-04-03 10:13:10.000000000 +0200
++++ simplesamlphp-trunk/metadata/saml20-idp-remote.php	2013-04-03 10:14:37.000000000 +0200
+@@ -51,3 +51,9 @@
+ 	'certFingerprint'              => 'cde69e332fa7dd0eaa99ee0ddf06916e8942ac53',
+ 	'hint.cidr'                    => '158.38.0.0/16',
  );
 +
 +$metadata['{BASE_URL}/sspproxy/saml2/idp/metadata.php'] = array(

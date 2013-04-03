@@ -1,6 +1,6 @@
-diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/config/authsources.php
---- simplesamlphp-1.10.0.orig/config/authsources.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/authsources.php	2013-02-25 20:39:03.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/config/authsources.php simplesamlphp-trunk/config/authsources.php
+--- simplesamlphp-trunk.orig/config/authsources.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/config/authsources.php	2013-04-03 09:53:19.000000000 +0200
 @@ -49,6 +49,83 @@
  	),
  	*/
@@ -85,9 +85,9 @@ diff -urN simplesamlphp-1.10.0.orig/config/authsources.php simplesamlphp-1.10.0/
  	/*
  	'example-userpass' => array(
  		'exampleauth:UserPass',
-diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
---- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-02-25 20:39:36.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/config.php
+--- simplesamlphp-trunk.orig/config/config.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/config/config.php	2013-04-03 09:53:19.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -133,7 +133,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'enable.shib13-idp'		=> false,
  	'enable.adfs-idp'		=> false,
  	'enable.wsfed-sp'		=> false,
-@@ -274,7 +274,7 @@
+@@ -293,7 +293,7 @@
  	/*
  	 * Languages available, RTL languages, and what language is default
  	 */
@@ -142,9 +142,9 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
  
-diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php
---- simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-02-25 20:39:03.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php simplesamlphp-trunk/metadata/saml20-idp-hosted.php
+--- simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/metadata/saml20-idp-hosted.php	2013-04-03 09:53:19.000000000 +0200
 @@ -14,22 +14,22 @@
  	'host' => '__DEFAULT__',
  
@@ -173,9 +173,9 @@ diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp
 -	*/
  
  );
-diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php simplesamlphp-1.10.0/metadata/saml20-sp-remote.php
---- simplesamlphp-1.10.0.orig/metadata/saml20-sp-remote.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-sp-remote.php	2013-02-25 20:39:03.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/metadata/saml20-sp-remote.php simplesamlphp-trunk/metadata/saml20-sp-remote.php
+--- simplesamlphp-trunk.orig/metadata/saml20-sp-remote.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/metadata/saml20-sp-remote.php	2013-04-03 09:53:19.000000000 +0200
 @@ -25,3 +25,8 @@
  	'simplesaml.nameidattribute' => 'uid',
  	'simplesaml.attributes' => FALSE,

@@ -1,6 +1,6 @@
-diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/config/config.php
---- simplesamlphp-1.10.0.orig/config/config.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/config/config.php	2013-03-09 18:04:27.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/config.php
+--- simplesamlphp-trunk.orig/config/config.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/config/config.php	2013-04-03 09:51:10.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -46,7 +46,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'enable.shib13-idp'		=> false,
  	'enable.adfs-idp'		=> false,
  	'enable.wsfed-sp'		=> false,
-@@ -274,7 +274,7 @@
+@@ -293,7 +293,7 @@
  	/*
  	 * Languages available, RTL languages, and what language is default
  	 */
@@ -55,7 +55,7 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
  
-@@ -491,6 +491,7 @@
+@@ -524,6 +524,7 @@
  	 */
  	'metadata.sources' => array(
  		array('type' => 'flatfile'),
@@ -63,9 +63,9 @@ diff -urN simplesamlphp-1.10.0.orig/config/config.php simplesamlphp-1.10.0/confi
  	),
  
  
-diff -urN simplesamlphp-1.10.0.orig/config/module_aggregator.php simplesamlphp-1.10.0/config/module_aggregator.php
---- simplesamlphp-1.10.0.orig/config/module_aggregator.php	1970-01-01 01:00:00.000000000 +0100
-+++ simplesamlphp-1.10.0/config/module_aggregator.php	2013-03-09 18:04:27.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/config/module_aggregator.php simplesamlphp-trunk/config/module_aggregator.php
+--- simplesamlphp-trunk.orig/config/module_aggregator.php	1970-01-01 01:00:00.000000000 +0100
++++ simplesamlphp-trunk/config/module_aggregator.php	2013-04-03 09:51:10.000000000 +0200
 @@ -0,0 +1,42 @@
 +<?php
 +
@@ -109,9 +109,9 @@ diff -urN simplesamlphp-1.10.0.orig/config/module_aggregator.php simplesamlphp-1
 +
 +);
 +
-diff -urN simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php
---- simplesamlphp-1.10.0.orig/metadata/saml20-idp-hosted.php	2012-09-25 12:16:10.000000000 +0200
-+++ simplesamlphp-1.10.0/metadata/saml20-idp-hosted.php	2013-03-09 18:05:42.000000000 +0100
+diff -urN simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php simplesamlphp-trunk/metadata/saml20-idp-hosted.php
+--- simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php	2013-04-03 09:46:24.000000000 +0200
++++ simplesamlphp-trunk/metadata/saml20-idp-hosted.php	2013-04-03 09:51:10.000000000 +0200
 @@ -14,14 +14,14 @@
  	'host' => '__DEFAULT__',
  

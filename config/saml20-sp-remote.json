@@ -22,6 +22,9 @@
                 "index": 3
             }
         ], 
+        "IDPList": [
+            "{BASE_URL}/sspidp/saml2/idp/metadata.php"
+        ], 
         "SingleLogoutService": [
             {
                 "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect", 

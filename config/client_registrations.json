@@ -42,5 +42,16 @@
         "redirect_uri": "{BASE_URL}/html-manage-ssp/index.html", 
         "secret": null, 
         "type": "user_agent_based_application"
+    }, 
+    {
+        "allowed_scope": "read", 
+        "contact_email": "mark@overmeer.net", 
+        "description": null, 
+        "icon": null, 
+        "id": "sympa-devel", 
+        "name": "Sympa development", 
+        "redirect_uri": "http://sympa.overmeer.net/wws/oauth2_ready/surfconext-test", 
+        "secret": "slagroom", 
+        "type": "web_application"
     }
 ]

@@ -158,6 +158,7 @@ patch -p0 < ${LAUNCH_DIR}/res/simplesamlphp-add-pdo-metadata-source-v6.diff
 
 # very weird default context: unconfined_u:object_r:user_tmp_t:s0, restore it
 restorecon lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
+restorecon config/module_aggregator.php
 
 # enable some modules
 touch modules/aggregator/enable

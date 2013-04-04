@@ -43,7 +43,7 @@ else
 fi
 
 SIMPLESAMLPHP_VERSION=trunk
-SIMPLESAMLPHP_REVISION=3230    # only for trunk
+SIMPLESAMLPHP_REVISION=3231    # only for trunk
 
 cat << EOF
 ###############################################################################

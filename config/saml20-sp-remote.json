@@ -20,35 +20,39 @@
                 "Binding": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01", 
                 "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml1-acs.php/default-sp/artifact", 
                 "index": 3
-            }, 
-            {
-                "Binding": "urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser", 
-                "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-acs.php/default-sp", 
-                "index": 4
             }
         ], 
-        "IDPList": [], 
         "SingleLogoutService": [
             {
                 "Binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect", 
                 "Location": "{BASE_URL}/sspsp/module.php/saml/sp/saml2-logout.php/default-sp"
             }
         ], 
+        "UIInfo": {
+            "Description": [], 
+            "DisplayName": {
+                "en": "Service Provider for \"{DOMAIN_NAME}\"", 
+                "nl": "Service Provider voor \"{DOMAIN_NAME}\""
+            }, 
+            "InformationURL": {
+                "en": "https://github.com/fkooman/frkonext-install-all"
+            }, 
+            "Logo": [
+                {
+                    "height": 48, 
+                    "url": "{BASE_URL}/res/frkonext-sp.png", 
+                    "width": 108
+                }
+            ], 
+            "PrivacyStatementURL": []
+        }, 
         "attributes": [
             "eduPersonEntitlement", 
             "cn", 
             "uid", 
             "schacHomeOrganization"
         ], 
-        "contacts": [
-            {
-                "contactType": "technical", 
-                "emailAddress": [
-                    "na@example.org"
-                ], 
-                "givenName": "Administrator"
-            }
-        ], 
+        "contacts": [], 
         "description": {
             "en": "This is a Service Provider demonstrating FrKoNext.", 
             "nl": "Dit is een Service Provider om FrKoNext te demonstreren."

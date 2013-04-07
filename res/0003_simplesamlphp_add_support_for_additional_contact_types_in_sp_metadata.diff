@@ -1,0 +1,24 @@
+Index: modules/saml/www/sp/metadata.php
+===================================================================
+--- modules/saml/www/sp/metadata.php	(revision 3231)
++++ modules/saml/www/sp/metadata.php	(working copy)
+@@ -170,6 +170,9 @@
+ 	}
+ }
+ 
++// add additional contacts
++$contacts = $spconfig->getArray('contacts', array());
++
+ // add certificate
+ if (count($keys) === 1) {
+ 	$metaArray20['certData'] = $keys[0]['X509Certificate'];
+@@ -191,6 +194,9 @@
+ $metaBuilder->addMetadataSP20($metaArray20, $supported_protocols);
+ $metaBuilder->addOrganizationInfo($metaArray20);
+ if ( !empty($contact) ) $metaBuilder->addContact('technical', $contact);
++foreach ($contacts as $c) {
++    $metaBuilder->addContact($c['contactType'], $c);
++}
+ 
+ $xml = $metaBuilder->getEntityDescriptorText();
+ 

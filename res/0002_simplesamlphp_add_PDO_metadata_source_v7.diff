@@ -1,0 +1,137 @@
+Index: config-templates/config.php
+===================================================================
+--- config-templates/config.php	(revision 3232)
++++ config-templates/config.php	(working copy)
+@@ -499,7 +499,19 @@
+ 	 * - 'file': Path to the XML file with the metadata.
+ 	 * - 'url': The url to fetch metadata from. THIS IS ONLY FOR DEBUGGING - THERE IS NO CACHING OF THE RESPONSE.
+ 	 *
++	 * PDO metadata handler:
++	 * - 'type': This is always 'pdo'.
++	 * - 'dsn': This will be the full path to the database, see http://php.net/manual/en/pdo.drivers.php for your DB (REQUIRED)
++	 * - 'username': The username to use to connect to the database (OPTIONAL, default NULL)
++	 * - 'password': The password to use to connect to the database (OPTIONAL, default NULL)
++	 * - 'prefix': The prefix for the database tables to use (OPTIONAL, defaults to no prefix)
++	 * - 'persistent': Boolean specifying whether or not to use a persistent database connection (OPTIONAL, default FALSE)
+ 	 *
++	 * You can use the script in bin/importMetadataPdo.php to import the existing flatfile metadata
++	 * into the PDO database. The tables will be created assuming your configuration is correct in this file.
++	 *
++	 *     $ php bin/importMetadataPdo.php
++	 *
+ 	 * Examples:
+ 	 *
+ 	 * This example defines two flatfile sources. One is the default metadata directory, the other
+@@ -516,6 +528,11 @@
+ 	 *     array('type' => 'xml', 'file' => 'idp.example.org-idpMeta.xml'),
+ 	 *     ),
+ 	 *
++	 * This example defines a flatfile source and a PDO source.
++	 * 'metadata.sources' => array(
++	 *     array('type' => 'flatfile'),
++	 *     array('type' => 'pdo', 'dsn' => 'sqlite:/tmp/metadata.sqlite'),
++	 *     ),
+ 	 *
+ 	 * Default:
+ 	 * 'metadata.sources' => array(
+Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
++++ lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
+@@ -0,0 +1,96 @@
++<?php
++
++class SimpleSAML_Metadata_MetaDataStorageHandlerPdo extends SimpleSAML_Metadata_MetaDataStorageSource
++{
++    private $pdo;
++    private $tableName;
++
++    /**
++     * All the metadata sets simpleSAMLphp supports
++     */
++
++    // FIXME: find these somewhere else, or just don't care...
++    public $supportedSets = array (
++        'adfs-idp-hosted',
++        'adfs-sp-remote',
++        'saml20-idp-hosted',
++        'saml20-idp-remote',
++        'saml20-sp-remote',
++        'shib13-idp-hosted',
++        'shib13-idp-remote',
++        'shib13-sp-hosted',
++        'shib13-sp-remote',
++        'wsfed-idp-remote',
++        'wsfed-sp-hosted'
++    );
++
++    public function __construct($config)
++    {
++        assert('is_array($config)');
++
++        $globalConfig = SimpleSAML_Configuration::getInstance();
++        $cfgHelp = SimpleSAML_Configuration::loadFromArray($config, 'pdo metadata source');
++
++        // determine the table prefix if one was set
++        $this->tableName = $cfgHelp->getString('prefix', '') . "metadata";
++        $dsn = $cfgHelp->getString('dsn');
++
++        $driverOptions = array();
++        if ($cfgHelp->getBoolean('persistent', FALSE)) {
++            $driverOptions[PDO::ATTR_PERSISTENT] = TRUE;
++        }
++
++        $this->pdo = new PDO($dsn, $cfgHelp->getValue('username', NULL), $cfgHelp->getValue('password', NULL), $driverOptions);
++        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
++    }
++
++    public function getMetadataSet($metadataSet)
++    {
++        if (!in_array($metadataSet, $this->supportedSets)) {
++            return array();
++        }
++        $returnSet = array();
++
++        $stmt = $this->pdo->prepare("SELECT entity_id, entity_data FROM " . $this->tableName . " WHERE metadata_set = :metadata_set");
++        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
++        $stmt->execute();
++        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
++        // FIXME: can data also be false if no entries are there?
++        foreach ($data as $d) {
++            $returnSet[$d['entity_id']] = json_decode($d['entity_data'], TRUE);
++            // the 'entityid' key needs to be added to the entry itself...
++            if (preg_match('/__DYNAMIC(:[0-9]+)?__/', $d['entity_id'])) {
++                $returnSet[$d['entity_id']]['entityid'] = $this->generateDynamicHostedEntityID($metdataSet);
++            } else {
++                $returnSet[$d['entity_id']]['entityid'] = $d['entity_id'];
++            }
++        }
++
++        return $returnSet;
++    }
++
++    public function getMetaData($entityId, $metadataSet)
++    {
++        if (!in_array($metadataSet, $this->supportedSets)) {
++            return array();
++        }
++
++        $stmt = $this->pdo->prepare("SELECT entity_data FROM " . $this->tableName . " WHERE entity_id = :entity_id AND metadata_set = :metadata_set");
++        $stmt->bindValue(":entity_id", $entityId, PDO::PARAM_STR);
++        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
++        $stmt->execute();
++        $data = $stmt->fetch(PDO::FETCH_ASSOC);
++        // FIXME: if not exists it returns FALSE
++        $entry = json_decode($data['entity_data'], TRUE);
++
++        // the 'entityid' key needs to be added to the entry itself...
++        if (preg_match('/__DYNAMIC(:[0-9]+)?__/', $entityId)) {
++            $entry['entityid'] = $this->generateDynamicHostedEntityID($metadataSet);
++        } else {
++            $entry['entityid'] = $entityId;
++        }
++
++        return $entry;
++    }
++
++}

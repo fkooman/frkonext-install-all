@@ -1,8 +1,77 @@
+Index: docs/simplesamlphp-sql-metadata-backend.txt
+===================================================================
+--- docs/simplesamlphp-sql-metadata-backend.txt	(revision 0)
++++ docs/simplesamlphp-sql-metadata-backend.txt	(revision 0)
+@@ -0,0 +1,63 @@
++SQL backend for metadata
++========================
++
++<!--
++    This file is written in Markdown syntax.
++    For more information about how to use the Markdown syntax, read here:
++    http://daringfireball.net/projects/markdown/syntax
++-->
++
++  * Version: `$Id:$`
++  * Author: François Kooman [mooknarf@gmail.com](mailto:mooknarf@gmail.com)
++
++<!-- {{TOC}} -->
++
++This document describes how to use an SQL PDO backend to store metadata in 
++addition to e.g. the flat file storage. The reason for doing this is to have
++the ability to have a remote source for metadata that can be easily managed by
++clients that understand JSON.
++
++The SQL backend will write the metadata configuration in JSON to the database.
++The database has to following format:
++
++    CREATE TABLE metadata (
++        metadata_set VARCHAR(32) NOT NULL,
++        entity_id VARCHAR(255),
++        entity_data TEXT NOT NULL,
++        UNIQUE (metadata_set , entity_id)
++    );
++    
++The `metadata_set` field can contain any of the existing set names that are
++used in simpleSAMLphp, for example `saml20-idp-remote` or `saml20-sp-remote`.
++
++The `entity_id` field contains the entity ID of the entity to allow for quick
++search in the database. 
++
++The `entity_data` field contains a JSON encoded object from the current flat 
++file PHP array format, so as an example, encoding the following entry:
++
++    $metadata['google.com'] = array(
++            'AssertionConsumerService' => 'https://www.google.com/a/g.feide.no/acs',
++            'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
++            'simplesaml.nameidattribute' => 'uid',
++            'simplesaml.attributes' => FALSE,
++    );
++    
++results in the following JSON:
++
++    {
++        "AssertionConsumerService": "https://www.google.com/a/g.feide.no/acs",
++        "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
++        "simplesaml.attributes": false,
++        "simplesaml.nameidattribute": "uid"
++    }
++    
++The conversion can be done using the PHP function `json_encode`.
++
++To enable the PDO source in simpleSAMLphp, modify the `config.php` file 
++according to the example in the configuration file, for example:
++
++    'metadata.sources' => array(
++        array('type' => 'flatfile'),
++        array('type' => 'pdo', 'dsn' => 'sqlite:/tmp/metadata.sqlite'),
++    )
+\ No newline at end of file
 Index: config-templates/config.php
 ===================================================================
 --- config-templates/config.php	(revision 3234)
 +++ config-templates/config.php	(working copy)
-@@ -499,7 +499,19 @@
+@@ -499,6 +499,13 @@
  	 * - 'file': Path to the XML file with the metadata.
  	 * - 'url': The url to fetch metadata from. THIS IS ONLY FOR DEBUGGING - THERE IS NO CACHING OF THE RESPONSE.
  	 *
@@ -14,15 +83,9 @@ Index: config-templates/config.php
 +	 * - 'prefix': The prefix for the database tables to use (OPTIONAL, defaults to no prefix)
 +	 * - 'persistent': Boolean specifying whether or not to use a persistent database connection (OPTIONAL, default FALSE)
  	 *
-+	 * You can use the script in bin/importMetadataPdo.php to import the existing flatfile metadata
-+	 * into the PDO database. The tables will be created assuming your configuration is correct in this file.
-+	 *
-+	 *     $ php bin/importMetadataPdo.php
-+	 *
  	 * Examples:
  	 *
- 	 * This example defines two flatfile sources. One is the default metadata directory, the other
-@@ -516,6 +528,11 @@
+@@ -516,6 +523,11 @@
  	 *     array('type' => 'xml', 'file' => 'idp.example.org-idpMeta.xml'),
  	 *     ),
  	 *

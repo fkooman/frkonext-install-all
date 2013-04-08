@@ -1,6 +1,6 @@
 Index: config-templates/config.php
 ===================================================================
---- config-templates/config.php	(revision 3232)
+--- config-templates/config.php	(revision 3234)
 +++ config-templates/config.php	(working copy)
 @@ -499,7 +499,19 @@
  	 * - 'file': Path to the XML file with the metadata.
@@ -34,6 +34,86 @@ Index: config-templates/config.php
  	 *
  	 * Default:
  	 * 'metadata.sources' => array(
+Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php	(revision 3234)
++++ lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php	(working copy)
+@@ -113,30 +113,8 @@
+ 
+ 		return $metadataSet;
+ 	}
+-	
+-	private function generateDynamicHostedEntityID($set) {
+ 
+-		/* Get the configuration. */
+-		$baseurl = SimpleSAML_Utilities::getBaseURL();
+ 
+-		if ($set === 'saml20-idp-hosted') {
+-			return $baseurl . 'saml2/idp/metadata.php';
+-		} elseif($set === 'saml20-sp-hosted') {
+-			return $baseurl . 'saml2/sp/metadata.php';			
+-		} elseif($set === 'shib13-idp-hosted') {
+-			return $baseurl . 'shib13/idp/metadata.php';
+-		} elseif($set === 'shib13-sp-hosted') {
+-			return $baseurl . 'shib13/sp/metadata.php';
+-		} elseif($set === 'wsfed-sp-hosted') {
+-			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost();
+-		} elseif($set === 'adfs-idp-hosted') {
+-			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost() . ':idp';
+-		} else {
+-			throw new Exception('Can not generate dynamic EntityID for metadata of this type: [' . $set . ']');
+-		}
+-	}
+-
+-
+ }
+ 
+ ?>
+\ No newline at end of file
+Index: lib/SimpleSAML/Metadata/MetaDataStorageSource.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageSource.php	(revision 3234)
++++ lib/SimpleSAML/Metadata/MetaDataStorageSource.php	(working copy)
+@@ -69,6 +69,8 @@
+ 				return new SimpleSAML_Metadata_MetaDataStorageHandlerDynamicXML($sourceConfig);
+ 			case 'serialize':
+ 				return new SimpleSAML_Metadata_MetaDataStorageHandlerSerialize($sourceConfig);
++			case 'pdo':
++				return new SimpleSAML_Metadata_MetaDataStorageHandlerPdo($sourceConfig);
+ 			default:
+ 				throw new Exception('Invalid metadata source type: "' . $type . '".');
+ 		}
+@@ -224,6 +226,28 @@
+ 
+ 		return NULL;
+ 	}
++	
++	protected function generateDynamicHostedEntityID($set) {
+ 
++		/* Get the configuration. */
++		$baseurl = SimpleSAML_Utilities::getBaseURL();
++
++		if ($set === 'saml20-idp-hosted') {
++			return $baseurl . 'saml2/idp/metadata.php';
++		} elseif($set === 'saml20-sp-hosted') {
++			return $baseurl . 'saml2/sp/metadata.php';			
++		} elseif($set === 'shib13-idp-hosted') {
++			return $baseurl . 'shib13/idp/metadata.php';
++		} elseif($set === 'shib13-sp-hosted') {
++			return $baseurl . 'shib13/sp/metadata.php';
++		} elseif($set === 'wsfed-sp-hosted') {
++			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost();
++		} elseif($set === 'adfs-idp-hosted') {
++			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost() . ':idp';
++		} else {
++			throw new Exception('Can not generate dynamic EntityID for metadata of this type: [' . $set . ']');
++		}
++	}
++
+ }
+-?>
+\ No newline at end of file
++?>
 Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 ===================================================================
 --- lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)

@@ -43,7 +43,7 @@ else
 fi
 
 SIMPLESAMLPHP_VERSION=trunk
-SIMPLESAMLPHP_REVISION=3232    # only for trunk
+SIMPLESAMLPHP_REVISION=3234    # only for trunk
 
 cat << EOF
 ###############################################################################
@@ -122,7 +122,7 @@ else
     # download the tarball
     (
         cd ${INSTALL_DIR}/downloads
-        curl -O https://simplesamlphp.googlecode.com/files/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+        curl -L -O https://simplesamlphp.googlecode.com/files/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
     )
 fi
 
@@ -153,10 +153,8 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" | patch -p1
 
 # patch in PDO support
-echo "[PATCH] 0001_simplesamlphp_move_generateDynamicHostedEntityID_to_parent_class.diff"
-patch -p0 < ${LAUNCH_DIR}/res/0001_simplesamlphp_move_generateDynamicHostedEntityID_to_parent_class.diff
-echo "[PATCH] 0002_simplesamlphp_add_PDO_metadata_source_v7.diff"
-patch -p0 < ${LAUNCH_DIR}/res/0002_simplesamlphp_add_PDO_metadata_source_v7.diff
+echo "[PATCH] 0001_simplesamlphp_add_PDO_metadata_source_v7.diff"
+patch -p0 < ${LAUNCH_DIR}/res/0001_simplesamlphp_add_PDO_metadata_source_v7.diff
 
 # very weird default context: unconfined_u:object_r:user_tmp_t:s0, restore it
 restorecon lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
@@ -230,8 +228,8 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-SP.diff \
     | sed "s|{CERT_DATA}|${CERT_DATA}|g" | patch -p1
 
 # patch in SAML SP metadata contact support
-echo "[PATCH] 0003_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff"
-patch -p0 < ${LAUNCH_DIR}/res/0003_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff
+echo "[PATCH] 0002_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff"
+patch -p0 < ${LAUNCH_DIR}/res/0002_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff
 
 # Apache config
 echo "Alias ${BASE_PATH}/sspsp ${INSTALL_DIR}/ssp/sp/www" > ${INSTALL_DIR}/apache/frkonext_sspsp.conf
@@ -310,16 +308,16 @@ mkdir -p html-webapp-deps/js
 mkdir -p html-webapp-deps/bootstrap
 
 # jQuery
-curl -o html-webapp-deps/js/jquery.js http://code.jquery.com/jquery.min.js
+curl -L -o html-webapp-deps/js/jquery.js http://code.jquery.com/jquery.min.js
 
 # JSrender (JavaScript Template Rendering for jQuery)
-curl -o html-webapp-deps/js/jsrender.js https://raw.github.com/BorisMoore/jsrender/master/jsrender.js
+curl -L -o html-webapp-deps/js/jsrender.js https://raw.github.com/BorisMoore/jsrender/master/jsrender.js
 
 # JSO (JavaScript OAuth 2 client)
-curl -o html-webapp-deps/js/jso.js https://raw.github.com/andreassolberg/jso/master/jso.js
+curl -L -o html-webapp-deps/js/jso.js https://raw.github.com/andreassolberg/jso/master/jso.js
 
 # Bootstrap
-curl -o html-webapp-deps/bootstrap.zip http://twitter.github.com/bootstrap/assets/bootstrap.zip
+curl -L -o html-webapp-deps/bootstrap.zip http://twitter.github.io/bootstrap/assets/bootstrap.zip
 (cd html-webapp-deps/ && unzip -q bootstrap.zip && rm bootstrap.zip)
 )
 

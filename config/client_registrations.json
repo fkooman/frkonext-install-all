@@ -22,7 +22,7 @@
         "type": "user_agent_based_application"
     }, 
     {
-        "allowed_scope": "read", 
+        "allowed_scope": "http://openvoot.org/groups http://openvoot.org/people", 
         "contact_email": null, 
         "description": "Application to view your group membership and other members of your groups.", 
         "icon": null, 

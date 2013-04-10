@@ -43,7 +43,7 @@ else
 fi
 
 SIMPLESAMLPHP_VERSION=trunk
-SIMPLESAMLPHP_REVISION=3234    # only for trunk
+SIMPLESAMLPHP_REVISION=3235    # only for trunk
 
 cat << EOF
 ###############################################################################
@@ -226,10 +226,6 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-SP.diff \
     | sed "s|{SECRET_SALT}|${SSP_SECRET_SALT}|g" \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" \
     | sed "s|{CERT_DATA}|${CERT_DATA}|g" | patch -p1
-
-# patch in SAML SP metadata contact support
-echo "[PATCH] 0002_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff"
-patch -p0 < ${LAUNCH_DIR}/res/0002_simplesamlphp_add_support_for_additional_contact_types_in_sp_metadata.diff
 
 # Apache config
 echo "Alias ${BASE_PATH}/sspsp ${INSTALL_DIR}/ssp/sp/www" > ${INSTALL_DIR}/apache/frkonext_sspsp.conf

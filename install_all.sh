@@ -55,7 +55,7 @@ cat << EOF
 #                                                                             #
 # * simpleSAMLphp                                                             #
 # * php-rest-service                                                          #
-# * php-lib-remote-rs                                                         #
+# * php-oauth-lib-rs                                                          #
 # * php-ssp-api                                                               #
 # * php-oauth                                                                 #
 # * html-manage-ssp                                                           #
@@ -241,13 +241,13 @@ cd ${INSTALL_DIR}
 git clone https://github.com/fkooman/php-rest-service.git
 )
 cat << EOF
-######################################
-# php-lib-remote-rs (SHARED LIBRARY) #
-######################################
+#####################################
+# php-oauth-lib-rs (SHARED LIBRARY) #
+#####################################
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-lib-remote-rs.git
+git clone https://github.com/fkooman/php-oauth-lib-rs.git
 )
 
 cat << EOF
@@ -262,7 +262,7 @@ cd php-ssp-api
 
 mkdir extlib
 ln -s ../../php-rest-service extlib/
-ln -s ../../php-lib-remote-rs extlib/
+ln -s ../../php-oauth-lib-rs extlib/
 
 sh docs/configure.sh
 php docs/initDatabase.php
@@ -434,7 +434,7 @@ cd php-voot-proxy
 
 mkdir extlib
 ln -s ../../php-rest-service extlib/
-ln -s ../../php-lib-remote-rs extlib/
+ln -s ../../php-oauth-lib-rs extlib/
 
 sh docs/configure.sh
 

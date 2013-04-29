@@ -1,0 +1,11 @@
+90 => array(
+    'class' => 'consent:Consent',
+    'store' => array(
+        'consent:Database',
+        'dsn' => 'mysql:host=127.0.0.1;dbname=ssp',
+        'username' => 'ssp',
+        'password' => 'ssp',
+    ),
+    'focus' => 'yes',
+    'checked' => TRUE
+),

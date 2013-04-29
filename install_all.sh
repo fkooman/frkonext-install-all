@@ -282,7 +282,7 @@ cat ${LAUNCH_DIR}/config/saml20-sp-remote.json \
     | sed "s|{BASE_URL}|${BASE_URL}|g" > tmp/saml20-sp-remote.json
 
 cat config/config.ini \
-    | sed "s|http://localhost/php-oauth/tokeninfo.php|${BASE_URL}/php-oauth/tokeninfo.php|g" \
+    | sed "s|http://localhost/php-oauth/introspect.php|${BASE_URL}/php-oauth/introspect.php|g" \
     | sed "s|/var/simplesamlphp|${INSTALL_DIR}/ssp/proxy|g" > config/tmp_config.ini
 mv config/tmp_config.ini config/config.ini
 
@@ -439,7 +439,7 @@ ln -s ../../php-oauth-lib-rs extlib/
 sh docs/configure.sh
 
 cat config/proxy.ini \
-    | sed "s|http://localhost/php-oauth/tokeninfo.php|${BASE_URL}/php-oauth/tokeninfo.php|g" > config/tmp_proxy.ini
+    | sed "s|http://localhost/php-oauth/introspect.php|${BASE_URL}/php-oauth/introspect.php|g" > config/tmp_proxy.ini
 mv config/tmp_proxy.ini config/proxy.ini
 
 php docs/initProxyDatabase.php

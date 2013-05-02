@@ -12,9 +12,9 @@
 /------------+-----------\            | HTTP/Bearer   | HTTP/Bearer
 | SAML Proxy             |            |               |
 | cPNK                   +<-----------+---------------*
-|                        |            |               |
+|                        |            |               | 
 |                        +<-----------*               |
-+---------------+        |            |               |
++---------------+        | IdP/SP/ACL |               |Consent/Stats
 | WAYF     cGRE |        |            v               v 
 +---------------+        |     /------+-----\  /------+-----\
 | Metadata cGRE |        |     | REST cPNK  |  | REST cPNK  |

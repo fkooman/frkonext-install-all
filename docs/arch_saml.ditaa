@@ -13,35 +13,38 @@
 | SAML Proxy             |
 | cPNK                   |
 +---------------+        |
-| WAYF     cGRE |        |             
-+---------------+        |
-| Metadata cGRE |        |      
-+---------------+        |      o IdP/SP configuration 
-|                        |
-+---------------+        |      +---------+       +------------+
-| ACL      cGRE |        |  R/O | {s}     |  R/W  | REST  cPNK | HTTP/Basic
-+---------------+        +<-----+ Config  +<----->+ Management +<------------
-| ARP/AM   cGRE |        |      | DB cBLU |       | API        | HTTP/Bearer
-+---------------+        |      +---------+       +------------+
-|                        |
-+---------------+        |
-| Logging  cGRE |        |      +---------+       +------------+
-+---------------+        |  R/W | {s}     |  R/W  | REST  cPNK | HTTP/Basic
-| Usage    cGRE |        +<---->+ Usage   +<----->+ Usage      +<------------
-+---------------+        |      | DB cBLU |       | API        | HTTP/Bearer
-| Consent  cGRE |        |      +---------+       +------------+
-+---------------+        |
-|                        |      o Logging, Usage, Consent
-|                        |     
-+------------+-----------+
-             ^
-             |                   
-             | SAML             
-             |
-      +------+------+         
-      |             |         
-      v             v
-+-----+----+  +-----+----+                
-| SAML     |  | SAML     |   
-| SP cRED  |  | SP  cRED |
-+----------+  +----------+   
+| WAYF     cGRE |        |                                          
++---------------+        |                                          
+| Metadata cGRE |        |        o ACL
++---------------+        |        o IdP
+|                        |        o SP
++---------------+        |     +---------+     +--------------+
+| ACL      cGRE |        | R/O | {s}     | R/W | REST  cPNK   | HTTP/Basic
++---------------+        +<----+ Config  +<--->+ Management   +<----------->
+| ARP/AM   cGRE |        |     | DB cBLU |     | API          | HTTP/Bearer
++---------------+        |     +---------+     +------------+-+
+|                        |                                  |
++---------------+        |                                  |
+| Logging  cGRE |        |     +---------+     +---------+  |
++---------------+        | R/W | {s}     | R/W | REST    |  |   HTTP/Basic
+| Usage    cGRE |        +<--->+ Usage   +<--->+ Usage   +<-+-------------->
++---------------+        |     | DB cBLU |     | API cPNK|  |   HTTP/Bearer
+| Consent  cGRE |        |     +---------+     +-------+-+  |
++---------------+        |      o Stats                |    |
+|                        |      o Consent              |    |
+|                        |                             |    |
++------------+-----------+                             |    |
+             ^                                         |    |
+             |                                         |    |
+             | SAML                                    |    |
+             |                                         |    |
+      +------+------+--------------+                   |    |
+      |             |              |                   |    |
+      v             v              v                   v    v
++-----+----+  +-----+----+   +-----+----+---+----------+----+-+
+| SAML     |  | SAML     |   | SAML     |   | Introspection   |
+| SP cRED  |  | SP  cRED |   | SP  cRED |   | Endpoint cGRE   | 
++----------+  +----------+   +----------+   +-----------------+  HTTP/OAuth
+                             | Authorization                  +<----------->
+                             | Server                    cPNK |
+                             +--------------------------------+

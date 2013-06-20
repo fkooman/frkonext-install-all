@@ -1,0 +1,295 @@
+Index: docs/simplesamlphp-sql-metadata-backend.txt
+===================================================================
+--- docs/simplesamlphp-sql-metadata-backend.txt	(revision 0)
++++ docs/simplesamlphp-sql-metadata-backend.txt	(revision 0)
+@@ -0,0 +1,70 @@
++SQL backend for metadata
++========================
++
++<!--
++    This file is written in Markdown syntax.
++    For more information about how to use the Markdown syntax, read here:
++    http://daringfireball.net/projects/markdown/syntax
++-->
++
++  * Version: `$Id:$`
++  * Author: François Kooman [mooknarf@gmail.com](mailto:mooknarf@gmail.com)
++
++<!-- {{TOC}} -->
++
++This document describes how to use an SQL PDO backend to store metadata in 
++addition to e.g. the flat file storage. The reason for doing this is to have
++the ability to have a remote source for metadata that can be easily managed by
++clients that understand JSON.
++
++The SQL backend will write the metadata configuration in JSON to the database.
++The database has to following format:
++
++    CREATE TABLE metadata (
++        metadata_set VARCHAR(32) NOT NULL,
++        entity_id VARCHAR(255),
++        revision_id INTEGER DEFAULT 0,
++        revision_note TEXT DEFAULT NULL,
++        entity_data TEXT NOT NULL,
++        UNIQUE (metadata_set , entity_id , revision_id)
++    );
++    
++The `metadata_set` field can contain any of the existing set names that are
++used in simpleSAMLphp, for example `saml20-idp-remote` or `saml20-sp-remote`.
++
++The `entity_id` field contains the entity ID of the entity to allow for quick
++search in the database. 
++
++The `revision_id` field contains the revision of the entry. The first revision
++is `0`, every revision should increment this number by 1.
++
++The `revision_note` field contains some information about the revision created
++
++The `entity_data` field contains a JSON encoded object from the current flat 
++file PHP array format, so as an example, encoding the following entry:
++
++    $metadata['google.com'] = array(
++            'AssertionConsumerService' => 'https://www.google.com/a/g.feide.no/acs',
++            'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
++            'simplesaml.nameidattribute' => 'uid',
++            'simplesaml.attributes' => FALSE,
++    );
++    
++results in the following JSON:
++
++    {
++        "AssertionConsumerService": "https://www.google.com/a/g.feide.no/acs",
++        "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
++        "simplesaml.attributes": false,
++        "simplesaml.nameidattribute": "uid"
++    }
++    
++The conversion can be done using the PHP function `json_encode`.
++
++To enable the PDO source in simpleSAMLphp, modify the `config.php` file 
++according to the example in the configuration file, for example:
++
++    'metadata.sources' => array(
++        array('type' => 'flatfile'),
++        array('type' => 'pdo', 'dsn' => 'sqlite:/tmp/metadata.sqlite'),
++    )
+\ No newline at end of file
+Index: config-templates/config.php
+===================================================================
+--- config-templates/config.php	(revision 3252)
++++ config-templates/config.php	(working copy)
+@@ -499,6 +499,13 @@
+ 	 * - 'file': Path to the XML file with the metadata.
+ 	 * - 'url': The url to fetch metadata from. THIS IS ONLY FOR DEBUGGING - THERE IS NO CACHING OF THE RESPONSE.
+ 	 *
++	 * PDO metadata handler:
++	 * - 'type': This is always 'pdo'.
++	 * - 'dsn': This will be the full path to the database, see http://php.net/manual/en/pdo.drivers.php for your DB (REQUIRED)
++	 * - 'username': The username to use to connect to the database (OPTIONAL, default NULL)
++	 * - 'password': The password to use to connect to the database (OPTIONAL, default NULL)
++	 * - 'prefix': The prefix for the database tables to use (OPTIONAL, defaults to no prefix)
++	 * - 'persistent': Boolean specifying whether or not to use a persistent database connection (OPTIONAL, default FALSE)
+ 	 *
+ 	 * Examples:
+ 	 *
+@@ -516,6 +523,11 @@
+ 	 *     array('type' => 'xml', 'file' => 'idp.example.org-idpMeta.xml'),
+ 	 *     ),
+ 	 *
++	 * This example defines a flatfile source and a PDO source.
++	 * 'metadata.sources' => array(
++	 *     array('type' => 'flatfile'),
++	 *     array('type' => 'pdo', 'dsn' => 'sqlite:/tmp/metadata.sqlite'),
++	 *     ),
+ 	 *
+ 	 * Default:
+ 	 * 'metadata.sources' => array(
+Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php	(revision 3252)
++++ lib/SimpleSAML/Metadata/MetaDataStorageHandlerFlatFile.php	(working copy)
+@@ -113,30 +113,8 @@
+ 
+ 		return $metadataSet;
+ 	}
+-	
+-	private function generateDynamicHostedEntityID($set) {
+ 
+-		/* Get the configuration. */
+-		$baseurl = SimpleSAML_Utilities::getBaseURL();
+ 
+-		if ($set === 'saml20-idp-hosted') {
+-			return $baseurl . 'saml2/idp/metadata.php';
+-		} elseif($set === 'saml20-sp-hosted') {
+-			return $baseurl . 'saml2/sp/metadata.php';			
+-		} elseif($set === 'shib13-idp-hosted') {
+-			return $baseurl . 'shib13/idp/metadata.php';
+-		} elseif($set === 'shib13-sp-hosted') {
+-			return $baseurl . 'shib13/sp/metadata.php';
+-		} elseif($set === 'wsfed-sp-hosted') {
+-			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost();
+-		} elseif($set === 'adfs-idp-hosted') {
+-			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost() . ':idp';
+-		} else {
+-			throw new Exception('Can not generate dynamic EntityID for metadata of this type: [' . $set . ']');
+-		}
+-	}
+-
+-
+ }
+ 
+ ?>
+\ No newline at end of file
+Index: lib/SimpleSAML/Metadata/MetaDataStorageSource.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageSource.php	(revision 3252)
++++ lib/SimpleSAML/Metadata/MetaDataStorageSource.php	(working copy)
+@@ -69,6 +69,8 @@
+ 				return new SimpleSAML_Metadata_MetaDataStorageHandlerDynamicXML($sourceConfig);
+ 			case 'serialize':
+ 				return new SimpleSAML_Metadata_MetaDataStorageHandlerSerialize($sourceConfig);
++			case 'pdo':
++				return new SimpleSAML_Metadata_MetaDataStorageHandlerPdo($sourceConfig);
+ 			default:
+ 				throw new Exception('Invalid metadata source type: "' . $type . '".');
+ 		}
+@@ -224,6 +226,28 @@
+ 
+ 		return NULL;
+ 	}
++	
++	protected function generateDynamicHostedEntityID($set) {
+ 
++		/* Get the configuration. */
++		$baseurl = SimpleSAML_Utilities::getBaseURL();
++
++		if ($set === 'saml20-idp-hosted') {
++			return $baseurl . 'saml2/idp/metadata.php';
++		} elseif($set === 'saml20-sp-hosted') {
++			return $baseurl . 'saml2/sp/metadata.php';			
++		} elseif($set === 'shib13-idp-hosted') {
++			return $baseurl . 'shib13/idp/metadata.php';
++		} elseif($set === 'shib13-sp-hosted') {
++			return $baseurl . 'shib13/sp/metadata.php';
++		} elseif($set === 'wsfed-sp-hosted') {
++			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost();
++		} elseif($set === 'adfs-idp-hosted') {
++			return 'urn:federation:' . SimpleSAML_Utilities::getSelfHost() . ':idp';
++		} else {
++			throw new Exception('Can not generate dynamic EntityID for metadata of this type: [' . $set . ']');
++		}
++	}
++
+ }
+-?>
+\ No newline at end of file
++?>
+Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
+===================================================================
+--- lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
++++ lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
+@@ -0,0 +1,104 @@
++<?php
++
++class SimpleSAML_Metadata_MetaDataStorageHandlerPdo extends SimpleSAML_Metadata_MetaDataStorageSource
++{
++    private $pdo;
++    private $tableName;
++
++    public function __construct($config)
++    {
++        assert('is_array($config)');
++
++        $globalConfig = SimpleSAML_Configuration::getInstance();
++        $cfgHelp = SimpleSAML_Configuration::loadFromArray($config, 'pdo metadata source');
++
++        // determine the table prefix if one was set
++        $this->tableName = $cfgHelp->getString('prefix', '') . "metadata";
++        $dsn = $cfgHelp->getString('dsn');
++
++        $driverOptions = array();
++        if ($cfgHelp->getBoolean('persistent', FALSE)) {
++            $driverOptions[PDO::ATTR_PERSISTENT] = TRUE;
++        }
++
++        $this->pdo = new PDO($dsn, $cfgHelp->getValue('username', NULL), $cfgHelp->getValue('password', NULL), $driverOptions);
++        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
++    }
++
++    public function getMetadataSet($metadataSet)
++    {
++        $returnSet = array();
++
++        $query = sprintf("
++            SELECT
++                md.entity_id, md.entity_data
++            FROM
++                %s md
++                    INNER JOIN
++                (SELECT
++                    entity_id, MAX(revision_id) AS revision_id
++                FROM
++                    %s
++                GROUP BY entity_id) mdj
++            WHERE
++                md.metadata_set = :metadata_set
++                    AND md.entity_id = mdj.entity_id
++                    AND md.revision_id = mdj.revision_id
++        ", $this->tableName, $this->tableName);
++        $stmt = $this->pdo->prepare($query);
++        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
++        $stmt->execute();
++        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
++        // FIXME: can data also be false if no entries are there?
++        foreach ($data as $d) {
++            $returnSet[$d['entity_id']] = json_decode($d['entity_data'], TRUE);
++            // the 'entityid' key needs to be added to the entry itself...
++            if (preg_match('/__DYNAMIC(:[0-9]+)?__/', $d['entity_id'])) {
++                $returnSet[$d['entity_id']]['entityid'] = $this->generateDynamicHostedEntityID($metdataSet);
++            } else {
++                $returnSet[$d['entity_id']]['entityid'] = $d['entity_id'];
++            }
++        }
++
++        return $returnSet;
++    }
++
++    public function getMetaData($entityId, $metadataSet)
++    {
++        $query = sprintf("
++            SELECT
++                md.entity_data
++            FROM
++                %s md
++                    INNER JOIN
++                (SELECT
++                    entity_id, MAX(revision_id) AS revision_id
++                FROM
++                    %s
++                GROUP BY entity_id) mdj
++            WHERE
++                md.entity_id = :entity_id
++                    AND md.metadata_set = :metadata_set
++                    AND md.entity_id = mdj.entity_id
++                    AND md.revision_id = mdj.revision_id
++        ", $this->tableName, $this->tableName);
++
++        $stmt = $this->pdo->prepare($query);
++        $stmt->bindValue(":entity_id", $entityId, PDO::PARAM_STR);
++        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
++        $stmt->execute();
++        $data = $stmt->fetch(PDO::FETCH_ASSOC);
++        // FIXME: if not exists it returns FALSE
++        $entry = json_decode($data['entity_data'], TRUE);
++
++        // the 'entityid' key needs to be added to the entry itself...
++        if (preg_match('/__DYNAMIC(:[0-9]+)?__/', $entityId)) {
++            $entry['entityid'] = $this->generateDynamicHostedEntityID($metadataSet);
++        } else {
++            $entry['entityid'] = $entityId;
++        }
++
++        return $entry;
++    }
++
++}

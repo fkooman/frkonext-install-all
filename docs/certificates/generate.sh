@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export SAN="DNS: www.frkonext.org,  DNS: frkonext.org, DNS: authn.frkonext.org, DNS: authz.frkonext.org, DNS: voot.frkonext.org"
+export SAN="DNS: www.frkonext.org, DNS: frkonext.org, DNS: authn.frkonext.org, DNS: authz.frkonext.org, DNS: manage.frkonext.org, DNS: voot.frkonext.org"
 openssl req \
 	-new \
 	-days 365 \

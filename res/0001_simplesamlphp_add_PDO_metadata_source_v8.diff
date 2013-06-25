@@ -188,7 +188,7 @@ Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 ===================================================================
 --- lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
 +++ lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php	(revision 0)
-@@ -0,0 +1,104 @@
+@@ -0,0 +1,105 @@
 +<?php
 +
 +class SimpleSAML_Metadata_MetaDataStorageHandlerPdo extends SimpleSAML_Metadata_MetaDataStorageSource
@@ -240,7 +240,6 @@ Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 +        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
 +        $stmt->execute();
 +        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-+        // FIXME: can data also be false if no entries are there?
 +        foreach ($data as $d) {
 +            $returnSet[$d['entity_id']] = json_decode($d['entity_data'], TRUE);
 +            // the 'entityid' key needs to be added to the entry itself...
@@ -279,7 +278,9 @@ Index: lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
 +        $stmt->bindValue(":metadata_set", $metadataSet, PDO::PARAM_STR);
 +        $stmt->execute();
 +        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-+        // FIXME: if not exists it returns FALSE
++        if (FALSE === $data) {
++            return NULL;
++        }
 +        $entry = json_decode($data['entity_data'], TRUE);
 +
 +        // the 'entityid' key needs to be added to the entry itself...

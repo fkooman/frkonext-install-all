@@ -1,6 +1,6 @@
-diff -urN simplesamlphp-trunk.orig/config/authsources.php simplesamlphp-trunk/config/authsources.php
---- simplesamlphp-trunk.orig/config/authsources.php	2013-04-03 10:13:10.000000000 +0200
-+++ simplesamlphp-trunk/config/authsources.php	2013-04-03 10:15:43.000000000 +0200
+diff -urN simplesamlphp-1.11.0.orig/config/authsources.php simplesamlphp-1.11.0/config/authsources.php
+--- simplesamlphp-1.11.0.orig/config/authsources.php	2013-06-05 13:44:23.000000000 +0200
++++ simplesamlphp-1.11.0/config/authsources.php	2013-06-25 16:24:40.000000000 +0200
 @@ -22,11 +22,48 @@
  
  		// The entity ID of the IdP this should SP should contact.
@@ -51,9 +51,9 @@ diff -urN simplesamlphp-trunk.orig/config/authsources.php simplesamlphp-trunk/co
  	),
  
  
-diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/config.php
---- simplesamlphp-trunk.orig/config/config.php	2013-04-03 10:13:10.000000000 +0200
-+++ simplesamlphp-trunk/config/config.php	2013-04-03 10:14:37.000000000 +0200
+diff -urN simplesamlphp-1.11.0.orig/config/config.php simplesamlphp-1.11.0/config/config.php
+--- simplesamlphp-1.11.0.orig/config/config.php	2013-06-05 13:44:23.000000000 +0200
++++ simplesamlphp-1.11.0/config/config.php	2013-06-25 16:25:38.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -94,19 +94,18 @@ diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/
  	/*
  	 * Languages available, RTL languages, and what language is default
  	 */
--	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr'),
+-	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr', 'lv'),
 +	'language.available'	=> array('en', 'de', 'es', 'fr', 'nl'),
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
  
-diff -urN simplesamlphp-trunk.orig/metadata/saml20-idp-remote.php simplesamlphp-trunk/metadata/saml20-idp-remote.php
---- simplesamlphp-trunk.orig/metadata/saml20-idp-remote.php	2013-04-03 10:13:10.000000000 +0200
-+++ simplesamlphp-trunk/metadata/saml20-idp-remote.php	2013-04-03 10:14:37.000000000 +0200
-@@ -51,3 +51,9 @@
- 	'certFingerprint'              => 'cde69e332fa7dd0eaa99ee0ddf06916e8942ac53',
- 	'hint.cidr'                    => '158.38.0.0/16',
+diff -urN simplesamlphp-1.11.0.orig/metadata/saml20-idp-remote.php simplesamlphp-1.11.0/metadata/saml20-idp-remote.php
+--- simplesamlphp-1.11.0.orig/metadata/saml20-idp-remote.php	2013-06-05 13:44:23.000000000 +0200
++++ simplesamlphp-1.11.0/metadata/saml20-idp-remote.php	2013-06-25 16:25:19.000000000 +0200
+@@ -22,3 +22,8 @@
+ 	'certFingerprint'      => 'c9ed4dfb07caf13fc21e0fec1572047eb8a7a4cb'
  );
-+
+ 
 +$metadata['{BASE_URL}/sspproxy/saml2/idp/metadata.php'] = array(
 +	'SingleSignOnService' => '{BASE_URL}/sspproxy/saml2/idp/SSOService.php',
 +	'SingleLogoutService' => '{BASE_URL}/sspproxy/saml2/idp/SingleLogoutService.php',

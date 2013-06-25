@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ -f "versions.sh" ]
+then
+    echo "**** Using custom 'versions.sh'..."
+    source ./versions.sh
+else
+    echo "**** Using default 'versions.sh.default'..."
+    source ./versions.sh.default
+fi
+
 if [ -z "$1" ]
 then
 
@@ -42,8 +51,9 @@ else
     DATE_TIME=`date`
 fi
 
-SIMPLESAMLPHP_VERSION=trunk
-SIMPLESAMLPHP_REVISION=3237    # only for trunk
+SIMPLESAMLPHP_VERSION=1.11.0
+#SIMPLESAMLPHP_VERSION=trunk
+#SIMPLESAMLPHP_REVISION=3237    # only for trunk
 
 cat << EOF
 ###############################################################################
@@ -126,6 +136,11 @@ else
     )
 fi
 
+(
+cd ${INSTALL_DIR}/downloads
+curl -O http://getcomposer.org/composer.phar
+)
+
 cat << EOF
 #######################
 # simpleSAMLphp Proxy #
@@ -153,8 +168,8 @@ cat ${LAUNCH_DIR}/config/simpleSAMLphp-proxy.diff \
     | sed "s|{DOMAIN_NAME}|${DOMAIN_NAME}|g" | patch -p1
 
 # patch in PDO support
-echo "[PATCH] 0001_simplesamlphp_add_PDO_metadata_source_v7.diff"
-patch -p0 < ${LAUNCH_DIR}/res/0001_simplesamlphp_add_PDO_metadata_source_v7.diff
+echo "[PATCH] 0001_simplesamlphp_add_PDO_metadata_source_v8.diff"
+patch -p0 < ${LAUNCH_DIR}/res/0001_simplesamlphp_add_PDO_metadata_source_v8.diff
 
 # very weird default context: unconfined_u:object_r:user_tmp_t:s0, restore it
 restorecon lib/SimpleSAML/Metadata/MetaDataStorageHandlerPdo.php
@@ -238,7 +253,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-rest-service.git
+git clone -b ${PHP_REST_SERVICE_BRANCH} https://github.com/fkooman/php-rest-service.git
 )
 cat << EOF
 #####################################
@@ -247,7 +262,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-oauth-lib-rs.git
+git clone -b ${PHP_OAUTH_LIB_RS_BRANCH} https://github.com/fkooman/php-oauth-lib-rs.git
 )
 
 cat << EOF
@@ -257,7 +272,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-ssp-api.git
+git clone -b ${PHP_SSP_API_BRANCH} https://github.com/fkooman/php-ssp-api.git
 cd php-ssp-api
 
 mkdir extlib
@@ -324,7 +339,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-oauth.git
+git clone -b ${PHP_OAUTH_BRANCH} https://github.com/fkooman/php-oauth.git
 cd php-oauth
 
 mkdir extlib
@@ -361,7 +376,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/html-manage-ssp.git
+git clone -b ${HTML_MANAGE_SSP_BRANCH} https://github.com/fkooman/html-manage-ssp.git
 cd html-manage-ssp
 ln -s ../html-webapp-deps ext
 
@@ -377,7 +392,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/html-manage-applications.git
+git clone -b ${HTML_MANAGE_APPLICATIONS_BRANCH} https://github.com/fkooman/html-manage-applications.git
 cd html-manage-applications
 ln -s ../html-webapp-deps ext
 
@@ -393,7 +408,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/html-manage-authorizations.git
+git clone -b ${HTML_MANAGE_AUTHORIZATIONS_BRANCH} https://github.com/fkooman/html-manage-authorizations.git
 cd html-manage-authorizations
 ln -s ../html-webapp-deps ext
 
@@ -409,7 +424,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-voot-provider.git
+git clone -b ${PHP_VOOT_PROVIDER_BRANCH} https://github.com/fkooman/php-voot-provider.git
 cd php-voot-provider
 
 mkdir extlib
@@ -429,7 +444,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/php-voot-proxy.git
+git clone -b ${PHP_VOOT_PROXY_BRANCH} https://github.com/fkooman/php-voot-proxy.git
 cd php-voot-proxy
 
 mkdir extlib
@@ -460,7 +475,7 @@ cat << EOF
 EOF
 (
 cd ${INSTALL_DIR}
-git clone https://github.com/fkooman/html-voot-client.git
+git clone -b ${HTML_VOOT_CLIENT_BRANCH} https://github.com/fkooman/html-voot-client.git
 cd html-voot-client
 ln -s ../html-webapp-deps ext
 

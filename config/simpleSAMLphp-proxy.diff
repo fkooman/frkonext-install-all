@@ -1,6 +1,6 @@
-diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/config.php
---- simplesamlphp-trunk.orig/config/config.php	2013-04-03 09:46:24.000000000 +0200
-+++ simplesamlphp-trunk/config/config.php	2013-04-03 09:51:10.000000000 +0200
+diff -urN simplesamlphp-1.11.0.orig/config/config.php simplesamlphp-1.11.0/config/config.php
+--- simplesamlphp-1.11.0.orig/config/config.php	2013-06-05 13:44:23.000000000 +0200
++++ simplesamlphp-1.11.0/config/config.php	2013-06-25 16:20:50.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -50,7 +50,7 @@ diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/
  	/*
  	 * Languages available, RTL languages, and what language is default
  	 */
--	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr'),
+-	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw', 'ru', 'et', 'he', 'id', 'sr', 'lv'),
 +	'language.available'	=> array('en', 'de', 'es', 'fr', 'nl'),
  	'language.rtl'		=> array('ar','dv','fa','ur','he'),
  	'language.default'		=> 'en',
@@ -63,9 +63,9 @@ diff -urN simplesamlphp-trunk.orig/config/config.php simplesamlphp-trunk/config/
  	),
  
  
-diff -urN simplesamlphp-trunk.orig/config/module_aggregator.php simplesamlphp-trunk/config/module_aggregator.php
---- simplesamlphp-trunk.orig/config/module_aggregator.php	1970-01-01 01:00:00.000000000 +0100
-+++ simplesamlphp-trunk/config/module_aggregator.php	2013-04-03 09:51:10.000000000 +0200
+diff -urN simplesamlphp-1.11.0.orig/config/module_aggregator.php simplesamlphp-1.11.0/config/module_aggregator.php
+--- simplesamlphp-1.11.0.orig/config/module_aggregator.php	1970-01-01 01:00:00.000000000 +0100
++++ simplesamlphp-1.11.0/config/module_aggregator.php	2013-06-25 16:20:04.000000000 +0200
 @@ -0,0 +1,42 @@
 +<?php
 +
@@ -109,9 +109,9 @@ diff -urN simplesamlphp-trunk.orig/config/module_aggregator.php simplesamlphp-tr
 +
 +);
 +
-diff -urN simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php simplesamlphp-trunk/metadata/saml20-idp-hosted.php
---- simplesamlphp-trunk.orig/metadata/saml20-idp-hosted.php	2013-04-03 09:46:24.000000000 +0200
-+++ simplesamlphp-trunk/metadata/saml20-idp-hosted.php	2013-04-03 09:51:10.000000000 +0200
+diff -urN simplesamlphp-1.11.0.orig/metadata/saml20-idp-hosted.php simplesamlphp-1.11.0/metadata/saml20-idp-hosted.php
+--- simplesamlphp-1.11.0.orig/metadata/saml20-idp-hosted.php	2013-06-05 13:44:23.000000000 +0200
++++ simplesamlphp-1.11.0/metadata/saml20-idp-hosted.php	2013-06-25 16:20:04.000000000 +0200
 @@ -14,14 +14,14 @@
  	'host' => '__DEFAULT__',
  

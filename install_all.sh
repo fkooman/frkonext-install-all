@@ -342,8 +342,8 @@ cd ${INSTALL_DIR}
 git clone -b ${PHP_OAUTH_BRANCH} https://github.com/fkooman/php-oauth.git
 cd php-oauth
 
-mkdir extlib
-ln -s ../../php-rest-service extlib/
+php ${INSTALL_DIR}/downloads/composer.phar install
+restorecon -R vendor
 
 sh docs/configure.sh
 php docs/initOAuthDatabase.php

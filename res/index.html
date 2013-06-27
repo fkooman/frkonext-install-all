@@ -21,6 +21,16 @@
 
   <p>The code for the script that installs this environment can be found <a href="https://github.com/fkooman/frkonext-install-all">here</a>.</p>
 
+  <p>If you want to read more on OAuth, reading the specification is recommended. It is easy to read and comprehend if you have some basic understanding of web architecture:</p>
+
+  <ul>
+    <li><a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a></li>
+
+    <li><a href="https://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></li>
+  </ul>
+  
+  The first one deals with communication between the client and the authorization server. The second one deals with the communication between the client and the resource server.
+
   <h2>Service Information</h2>
 
   <table>
@@ -47,9 +57,9 @@
     </tr>
 
     <tr>
-      <td><tt>{BASE_URL}/php-oauth/tokeninfo.php</tt></td>
+      <td><tt>{BASE_URL}/php-oauth/introspect.php</tt></td>
 
-      <td>Token Info Endpoint, see <a href="https://developers.google.com/accounts/docs/OAuth2Login#validatingtoken">Google Documentation</a></td>
+      <td>Introspection Endpoint, see <a href="https://datatracker.ietf.org/doc/draft-richer-oauth-introspection/">Introspection Documentation</a></td>
     </tr>
 
     <tr>

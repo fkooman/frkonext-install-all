@@ -485,6 +485,44 @@ cat config/config.js.default \
 )
 
 cat << EOF
+####################
+# php-oauth-client #
+####################
+EOF
+(
+cd ${INSTALL_DIR}
+git clone -b ${PHP_OAUTH_CLIENT_BRANCH} https://github.com/fkooman/php-oauth-client.git
+cd php-oauth-client
+
+php ${INSTALL_DIR}/downloads/composer.phar install
+restorecon -R vendor
+
+sh bin/configure.sh
+php bin/initDatabase.php
+
+# Registration
+cat ${LAUNCH_DIR}/config/registration.yaml \
+    | sed "s|{BASE_URL}|${BASE_URL}|g" >> config/config.yaml
+
+cat docs/apache.conf \
+    | sed "s|/APPNAME|${BASE_PATH}/php-oauth-client|g" \
+    | sed "s|/PATH/TO/APP|${INSTALL_DIR}/php-oauth-client|g" > ${INSTALL_DIR}/apache/frkonext_php-oauth-client.conf
+)
+
+cat << EOF
+###################
+# php-voot-client #
+###################
+EOF
+(
+mkdir -p ${INSTALL_DIR}/php-voot-client
+cd ${INSTALL_DIR}/php-voot-client
+cat ${LAUNCH_DIR}/res/oauth.php \
+    | sed "s|{INSTALL_DIR}|${INSTALL_DIR}|g" \
+    | sed "s|{BASE_URL}|${BASE_URL}|g" > ${INSTALL_DIR}/php-voot-client/index.php
+)
+
+cat << EOF
 ######################
 # voot-specification #
 ######################

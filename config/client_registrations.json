@@ -27,10 +27,21 @@
         "description": "Application to view your group membership and other members of your groups.", 
         "icon": null, 
         "id": "html-voot-client", 
-        "name": "Group Membership Viewer", 
+        "name": "HTML Group Membership Viewer", 
         "redirect_uri": "{BASE_URL}/html-voot-client/index.html", 
         "secret": null, 
         "type": "user_agent_based_application"
+    }, 
+    {
+        "allowed_scope": "http://openvoot.org/groups http://openvoot.org/people", 
+        "contact_email": null, 
+        "description": "Application to view your group membership.", 
+        "icon": null, 
+        "id": "php-voot-client", 
+        "name": "PHP Group Membership Viewer", 
+        "redirect_uri": "{BASE_URL}/php-oauth-client/callback.php?id=php-voot-client", 
+        "secret": "f00b4r", 
+        "type": "web_application"
     }, 
     {
         "allowed_scope": "ssp", 

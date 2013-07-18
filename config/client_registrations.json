@@ -39,7 +39,7 @@
         "icon": "{BASE_URL}/php-oauth/img/placeholder.png", 
         "id": "php-voot-client", 
         "name": "PHP Group Membership Viewer", 
-        "redirect_uri": "{BASE_URL}/php-oauth-client/callback.php?id=php-voot-client", 
+        "redirect_uri": "{BASE_URL}/php-voot-client/callback.php", 
         "secret": "f00b4r", 
         "type": "web_application"
     }, 

@@ -228,6 +228,16 @@ mkdir -p ssp
 mv simplesamlphp-${SIMPLESAMLPHP_VERSION} ssp/sp
 cd ${INSTALL_DIR}/ssp/sp
 
+# install the ssp-voot-groups module
+(
+cd modules
+git clone -b ${SSP_VOOT_GROUPS_BRANCH} https://github.com/fkooman/ssp-voot-groups.git vootgroups
+cd vootgroups
+php ${INSTALL_DIR}/downloads/composer.phar install
+restorecon -R vendor
+touch enable
+)
+
 # convert the proxy certificate to a one-line base64 string
 CERT_DATA=`cat ../proxy/cert/proxy.crt | grep -v 'CERTIFICATE' | tr -d '\n'`
 

@@ -44,6 +44,17 @@
         "type": "web_application"
     }, 
     {
+        "allowed_scope": "http://openvoot.org/groups", 
+        "contact_email": null, 
+        "description": "simpleSAMLphp module to make group membership information available to applications.", 
+        "icon": "{BASE_URL}/php-oauth/img/placeholder.png", 
+        "id": "ssp-voot-groups", 
+        "name": "simpleSAMLphp Group Consumer", 
+        "redirect_uri": "{BASE_URL}/sspsp/module.php/vootgroups/callback.php", 
+        "secret": "v00tgr0ups", 
+        "type": "web_application"
+    }, 
+    {
         "allowed_scope": "ssp", 
         "contact_email": null, 
         "description": "Application to manage the simpleSAMLphp metadata registrations.", 

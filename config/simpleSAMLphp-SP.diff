@@ -1,6 +1,6 @@
 diff -urN simplesamlphp-1.11.0.orig/config/authsources.php simplesamlphp-1.11.0/config/authsources.php
 --- simplesamlphp-1.11.0.orig/config/authsources.php	2013-06-05 13:44:23.000000000 +0200
-+++ simplesamlphp-1.11.0/config/authsources.php	2013-06-25 16:24:40.000000000 +0200
++++ simplesamlphp-1.11.0/config/authsources.php	2013-07-18 16:49:41.000000000 +0200
 @@ -22,11 +22,48 @@
  
  		// The entity ID of the IdP this should SP should contact.
@@ -53,7 +53,7 @@ diff -urN simplesamlphp-1.11.0.orig/config/authsources.php simplesamlphp-1.11.0/
  
 diff -urN simplesamlphp-1.11.0.orig/config/config.php simplesamlphp-1.11.0/config/config.php
 --- simplesamlphp-1.11.0.orig/config/config.php	2013-06-05 13:44:23.000000000 +0200
-+++ simplesamlphp-1.11.0/config/config.php	2013-06-25 16:25:38.000000000 +0200
++++ simplesamlphp-1.11.0/config/config.php	2013-07-18 16:49:41.000000000 +0200
 @@ -22,7 +22,7 @@
  	 * external url, no matter where you come from (direct access or via the
  	 * reverse proxy).
@@ -101,8 +101,8 @@ diff -urN simplesamlphp-1.11.0.orig/config/config.php simplesamlphp-1.11.0/confi
  
 diff -urN simplesamlphp-1.11.0.orig/metadata/saml20-idp-remote.php simplesamlphp-1.11.0/metadata/saml20-idp-remote.php
 --- simplesamlphp-1.11.0.orig/metadata/saml20-idp-remote.php	2013-06-05 13:44:23.000000000 +0200
-+++ simplesamlphp-1.11.0/metadata/saml20-idp-remote.php	2013-06-25 16:25:19.000000000 +0200
-@@ -22,3 +22,8 @@
++++ simplesamlphp-1.11.0/metadata/saml20-idp-remote.php	2013-07-18 16:51:38.000000000 +0200
+@@ -22,3 +22,26 @@
  	'certFingerprint'      => 'c9ed4dfb07caf13fc21e0fec1572047eb8a7a4cb'
  );
  
@@ -110,4 +110,22 @@ diff -urN simplesamlphp-1.11.0.orig/metadata/saml20-idp-remote.php simplesamlphp
 +	'SingleSignOnService' => '{BASE_URL}/sspproxy/saml2/idp/SSOService.php',
 +	'SingleLogoutService' => '{BASE_URL}/sspproxy/saml2/idp/SingleLogoutService.php',
 +	'certData' => '{CERT_DATA}',
++    'authproc' => array(
++        40 => array (
++            'class' => 'vootgroups:AttributeAddVootGroups',
++            'vootScope' => 'http://openvoot.org/groups',
++            'vootEndpoint' => '{BASE_URL}/php-voot-proxy/voot.php/groups/@me',
++            'userIdAttribute' => 'uid',
++            'targetAttribute' => 'isMemberOf',
++            'clientConfig' => array (
++                'authorize_endpoint' => '{BASE_URL}/php-oauth/authorize.php',
++                'client_id' => 'ssp-voot-groups',
++                'client_secret' => 'v00tgr0ups',
++                'token_endpoint' => '{BASE_URL}/php-oauth/token.php',
++            ),
++            'storage' => array (
++                'type' => 'SessionStorage',
++            ),
++        ),
++    ),	
 +);

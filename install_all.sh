@@ -361,6 +361,7 @@ php docs/initOAuthDatabase.php
 
 # config
 cat config/oauth.ini.defaults \
+    | sed "s|serviceName = \"My API\"|serviceName = \"FrKoNext API\"|g" \
     | sed "s|authenticationMechanism = \"DummyResourceOwner\"|;authenticationMechanism = \"DummyResourceOwner\"|g" \
     | sed "s|;authenticationMechanism = \"SspResourceOwner\"|authenticationMechanism = \"SspResourceOwner\"|g" \
     | sed "s|allowResourceOwnerScopeFiltering = FALSE|allowResourceOwnerScopeFiltering = TRUE|g" \

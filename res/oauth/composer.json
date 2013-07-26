@@ -1,7 +1,7 @@
 {
-    "name": "fkooman/php-voot-client",
+    "name": "fkooman/php-voot-client", 
     "require": {
-        "fkooman/guzzle-bearer-auth-plugin": "0.2.1",
-        "fkooman/php-oauth-client": "0.1.0"
+        "fkooman/guzzle-bearer-auth-plugin": "dev-master", 
+        "fkooman/php-oauth-client": "dev-master"
     }
 }

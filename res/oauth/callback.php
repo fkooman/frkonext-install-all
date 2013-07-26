@@ -1,34 +1,32 @@
 <?php
 
-use fkooman\OAuth\Client\ClientConfig;
-use fkooman\OAuth\Client\Callback;
-use fkooman\OAuth\Client\CallbackException;
-use fkooman\OAuth\Client\SessionStorage;
-use Guzzle\Http\Client;
-
 require_once 'vendor/autoload.php';
 
 /* OAuth client configuration */
-$clientConfig = ClientConfig::fromArray(array(
-    "authorize_endpoint" => "{BASE_URL}/php-oauth/authorize.php",
-    "client_id" => "php-voot-client",
-    "client_secret" => "f00b4r",
-    "token_endpoint" => "{BASE_URL}/php-oauth/token.php",
-));
+$clientConfig = new \fkooman\OAuth\Client\ClientConfig(
+    array(
+        "authorize_endpoint" => "{BASE_URL}/php-oauth/authorize.php",
+        "client_id" => "php-voot-client",
+        "client_secret" => "f00b4r",
+        "token_endpoint" => "{BASE_URL}/php-oauth/token.php",
+    )
+);
 
 try {
-    /* initialize the API */
-    $cb = new Callback();
-    $cb->setClientConfig("php-voot-client", $clientConfig);
-    $cb->setStorage(new SessionStorage());
-    $cb->setHttpClient(new Client());
-
-    /* handle the callback */
+    $tokenStorage = new \fkooman\OAuth\Client\SessionStorage();
+    $httpClient = new \Guzzle\Http\Client();
+    $cb = new \fkooman\OAuth\Client\Callback("php-voot-client", $clientConfig, $tokenStorage, $httpClient);
     $cb->handleCallback($_GET);
 
     header("HTTP/1.1 302 Found");
     header("Location: {BASE_URL}/php-voot-client/index.php");
-
-} catch (CallbackException $e) {
-    echo sprintf("ERROR: %s", $e->getMessage());
+    exit;
+} catch (\fkooman\OAuth\Client\AuthorizeException $e) {
+    // this exception is thrown by Callback when the OAuth server returns a
+    // specific error message for the client, e.g.: the user did not authorize
+    // the request
+    die(sprintf("ERROR: %s, DESCRIPTION: %s", $e->getMessage(), $e->getDescription()));
+} catch (\Exception $e) {
+    // other error, these should never occur in the normal flow
+    die(sprintf("ERROR: %s", $e->getMessage()));
 }

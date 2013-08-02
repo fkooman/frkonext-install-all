@@ -48,6 +48,22 @@ foreach ($as->getAuthData("saml:sp:NameID") as $k => $v) {
 <h2>IdP</h2>
 <?php print_r($as->getAuthData("saml:sp:IdP")); ?>
 
+<h2>Authenticating Authority</h2>
+<table>
+<thead>
+<tr><th>Index</th><th>IdP</th></tr>
+</thead>
+<tbody>
+<?php
+foreach ($as->getAuthData('saml:AuthenticatingAuthority') as $k => $v) {
+?>
+    <tr><td><strong><?php echo $k; ?></strong></td><td><?php echo $v; ?></td></tr>
+<?php
+}
+?>
+</tbody>
+</table>
+
 <h2>SessionIndex</h2>
 <?php print_r($as->getAuthData("saml:sp:SessionIndex")); ?>
 

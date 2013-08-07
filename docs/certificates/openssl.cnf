@@ -6,7 +6,8 @@ distinguished_name	= req_distinguished_name
 [ v3_req ]
 subjectAltName          = $ENV::SAN
 
-# the fields below are optional, they seem to be set by most CAs for
+# the fields below are not really needed, they seem to be set by most CAs for
 # SSL server certificates
 keyUsage                = critical,digitalSignature,keyEncipherment
 extendedKeyUsage        = serverAuth,clientAuth
+basicConstraints        = critical,CA:FALSE
